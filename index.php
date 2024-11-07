@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .header.scrolled {
-            background-color: #343a40; /* Your desired background color */
+            background-color: #301934; /* Your desired background color */
         }
 
         .navbar-dark .navbar-nav .nav-link {
@@ -349,7 +349,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Programs Section -->
-    <section class="py-5 bg-light" id="programs" style="background: #f3f4f6;">
+    <section class="py-5" id="programs" style="background: #f3f4f6;">
         <div class="container">
             <h2 class="text-center section-title">Our Programs</h2>
             <div class="section-title-hr"><!-- Underline --></div>
@@ -449,7 +449,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <!-- News & Stories Section -->
-    <section class="py-5 bg-light" id="news" style="background: #eaeaea;">
+    <section class="py-5" id="news" style="background: #eaeaea;">
         <div class="container">
             <div class="row">
                 <div class="col-md-4"></div> <!-- Empty column for spacing -->
@@ -613,7 +613,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Events Section -->
-    <section class="py-5 bg-light" id="events" style="background: #f9f9f9;">
+    <section class="py-5" id="events" style="background: #f9f9f9;">
         <div class="container">
             <!-- Countdown Timer Section -->
                 <div class="container text-center">

@@ -5,7 +5,7 @@ $merch_sql = "SELECT * FROM merch";
 $merch_result = $conn->query($merch_sql);
 
 // Fetch the event
-$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events ORDER BY created_at DESC LIMIT 6";
+$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events ORDER BY event_id DESC LIMIT 6";
 $events_result = mysqli_query($conn, $events_query);
 
 // Fetch the featured event
@@ -14,7 +14,7 @@ $featured_result = mysqli_query($conn, $query);
 $featured_event = mysqli_fetch_assoc($featured_result);
 
 // Fetch latest news from the database
-$sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY published_date DESC LIMIT 4";
+$sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY news_id DESC LIMIT 4";
 $resultNews = $conn->query($sqlNews);
 
 // Contact Us

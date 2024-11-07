@@ -348,4 +348,21 @@ if (isset($_POST['spotlight_delete'])) {
     exit();
 }
 
+// Handle the publish news request
+if (isset($_POST['publish_news'])) {
+    $news_id = $_POST['id'];
+
+    // Update the category and published_date
+    $query = "UPDATE news SET category = 'General', published_date = NOW() WHERE news_id = $news_id";
+    
+    if (mysqli_query($conn, $query)) {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>Swal.fire('Success!', 'News has been published!', 'success').then(function() {window.location = 'index.php?active=news';});</script>";
+    } else {
+        echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+        <script>Swal.fire('Error!', 'Failed to publish news.', 'error').then(function() {window.location = 'index.php?active=news';});</script>";
+    }
+}
+
+
 ?>

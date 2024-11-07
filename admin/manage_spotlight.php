@@ -102,7 +102,7 @@ $result = mysqli_query($conn, $query);
                     <?php if ($result && $result->num_rows > 0): ?>
                         <?php while($row = $result->fetch_assoc()): ?>
                             <tr>
-                                <td><?= $num_rows['spotlight_id']; ?></td>
+                                <td><?= $row['spotlight_id']; ?></td>
                                 <td><?= htmlspecialchars($row['title']); ?></td>
                                 <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['featured_image_url']; ?>" width="50" alt="Image"></td>

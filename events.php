@@ -269,7 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#spotlight">Spotlight</a></li>
+                        <li class="nav-item"><a class="nav-link" href="news.php">Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link active" href="events.php">Events</a></li>

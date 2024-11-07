@@ -5,9 +5,10 @@
 $merch_sql = "SELECT * FROM merch WHERE category = 'regular'";
 $result = $conn->query($merch_sql);
 
-// Featured merchandise
-$queryFeatured = "SELECT * FROM merch WHERE category = 'featured'";
-$resultFeatured = mysqli_query($conn, $queryFeatured);
+// Query to get the featured news article
+$queryFeaturedNews = "SELECT * FROM news WHERE category = 'Featured' ORDER BY published_date DESC LIMIT 1";
+$resultFeaturedNews = mysqli_query($conn, $queryFeaturedNews);
+$featuredNews = mysqli_fetch_assoc($resultFeaturedNews);
 
 // Spotlight merchandise
 $sqlSpotlight = "SELECT * FROM spotlight";
@@ -314,8 +315,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#spotlight">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#news">News</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="news.php">Spotlight</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="news.php">News</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
@@ -344,18 +345,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Featured Article Section -->
-    <section class="container my-4">
-        <div class="row">
-            <div class="col-md-5">
-                <img src="https://via.placeholder.com/500x300" alt="John Wick Chapter 4" class="featured-article" style="width: 100%; border-radius: 10px;">
+    <section class="container my-5 p-5">
+        <?php if ($featuredNews): ?>
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="./admin/img/<?= htmlspecialchars($featuredNews['image_url']); ?>" alt="<?= htmlspecialchars($featuredNews['title']); ?>" class="featured-article" style="width: 100%; border-radius: 10px;">
+                </div>
+                <div class="col-md-7">
+                    <p class="text-muted">
+                        <span><?= htmlspecialchars($featuredNews['author']); ?></span> • 
+                        <?= date('F j, Y', strtotime($featuredNews['published_date'])); ?>
+                    </p>
+                    <h3><?= htmlspecialchars($featuredNews['title']); ?></h3>
+                    <p><?= htmlspecialchars($featuredNews['content']) . '...'; ?></p>
+                    <p class="text-danger">News <span class="text-muted"> • <?= htmlspecialchars($featuredNews['category']); ?></span> </p>
+                </div>
             </div>
-            <div class="col-md-7">
-                <p class="text-muted"><span>Netflix</span> • 12 minutes ago</p>
-                <h3>Where To Watch 'John Wick: Chapter 4'</h3>
-                <p>There's been no official announcement regarding John Wick: Chapter 4's streaming release. However, given it's a Lionsgate film, it will eventually be released...</p>
-                <span class="text-danger">Movies</span> • <span>4 min read</span>
-            </div>
-        </div>
+        <?php else: ?>
+            <p>No featured news available at the moment.</p>
+        <?php endif; ?>
     </section>
 
     <!-- Latest News Section -->

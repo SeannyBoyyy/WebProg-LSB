@@ -148,7 +148,7 @@ $registeredUsers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as to
                         <div class="icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <h5 class="card-title">Registered Users</h5>
+                        <h5 class="card-title">Registered Admins</h5>
                         <h2 class="card-text text-primary"><?php echo $registeredUsers; ?></h2>
                     </div>
                 </div>

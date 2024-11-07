@@ -1,10 +1,58 @@
 <?php include('./config/config.php'); 
 
+// Regular merchandise
 // Query to retrieve merchandise items
-$merch_sql = "SELECT * FROM merch";
+$merch_sql = "SELECT * FROM merch WHERE category = 'regular'";
 $result = $conn->query($merch_sql);
 
+// Featured merchandise
+$queryFeatured = "SELECT * FROM merch WHERE category = 'featured'";
+$resultFeatured = mysqli_query($conn, $queryFeatured);
 
+
+// Contact Us
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $subject = mysqli_real_escape_string($conn, $_POST['subject']);
+    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $sent_at = date('Y-m-d H:i:s');
+
+    // Insert message into the database
+    $sql = "INSERT INTO messages (name, email, subject, message, sent_at) VALUES ('$name', '$email', '$subject', '$message', '$sent_at')";
+    
+    if (mysqli_query($conn, $sql)) {
+        // Success: Show SweetAlert
+        echo "
+        ...
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script>
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your message has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                window.location = 'news.php';
+            });
+        </script>";
+    } else {
+        echo "...
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        // Error: Show SweetAlert
+        echo "<script>
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was an error sending your message. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                window.location = 'news.php';
+            });
+        </script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -221,9 +269,9 @@ $result = $conn->query($merch_sql);
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
                         <li class="nav-item"><a class="nav-link" href="#spotlight">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#merchandise">Merchandise</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="merch.php">Merchandise</a></li>
+                        <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                     </ul>
                 </div>
@@ -243,9 +291,58 @@ $result = $conn->query($merch_sql);
 
     <!-- Features Section - Carousel -->
     <section class="py-5" id="features" style="background: #e9ecef;">
-        <div class="container-fluid">
-            <h2 class="text-center section-title">Features</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+        <div class="container">
+            <h2 class="text-center section-title">Featured</h2>
+            <div class="section-title-hr mb-4"></div>
+
+            <div id="featuredCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner p-5">
+
+                    <?php
+                    $isActive = true; // Flag for setting the first item as active
+                    while ($row = mysqli_fetch_assoc($resultFeatured)) {
+                        $activeClass = $isActive ? 'active' : ''; // Set 'active' class for the first slide
+                        $isActive = false; // Set flag to false after first iteration
+                        ?>
+                        <div class="carousel-item <?php echo $activeClass; ?>">
+                            <div class="row align-items-center">
+                                <div class="col-md-6 text-content p-5">
+                                    <span class="badge bg-success">Merchandise </span>
+                                    <h3 class="fw-bold mt-3"><?php echo htmlspecialchars($row['name']); ?></h3>
+                                    <p class="lead"><?php echo htmlspecialchars($row['description']); ?></p>
+                                    <div class="additional-info">
+                                    <span><i class="bi bi-calendar"></i> <?php echo htmlspecialchars(date('F j, Y', strtotime($row['created_at']))); ?></span>
+                                    <br><span><i class="bi bi-bag"></i> <?php echo htmlspecialchars($row['stock_quantity']); ?> in stock</span>
+                                    <br><span><i class="bi bi-cash"></i> Price: PHP<?php echo number_format(htmlspecialchars($row['price']), 2); ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <img src="./admin/img/<?php echo htmlspecialchars($row['image_url']); ?>" class="img-fluid rounded" alt="<?php echo htmlspecialchars($row['name']); ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+
+                <!-- Carousel Indicators -->
+                <div class="carousel-indicators">
+                    <?php
+                    mysqli_data_seek($resultFeatured, 0); // Reset result pointer to the beginning
+                    $slideIndex = 0;
+                    while ($row = mysqli_fetch_assoc($resultFeatured)) {
+                        $activeClass = $slideIndex === 0 ? 'active' : '';
+                        ?>
+                        <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="<?php echo $slideIndex; ?>" class="<?php echo $activeClass; ?>"
+                            aria-current="<?php echo $activeClass ? 'true' : 'false'; ?>" aria-label="Slide <?php echo $slideIndex + 1; ?>"
+                            style="width: 10px; height: 10px; background-color: <?php echo $activeClass ? 'black' : '#6c757d'; ?>; border-radius: 50%; border: none; opacity: 0.7;"></button>
+                        <?php
+                        $slideIndex++;
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -332,7 +429,7 @@ $result = $conn->query($merch_sql);
     <section class="py-5" id="contact" style="background: #e9ecef;">
         <div class="container">
             <h2 class="text-center mb-4 section-title">Contact Us</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+            <div class="section-title-hr"></div>
             <div class="row text-center mb-4">
                 <div class="col-md-4 mb-3">
                     <div class="card shadow-sm">
@@ -377,22 +474,22 @@ $result = $conn->query($merch_sql);
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <form>
+                    <form method="post" action="">
                         <div class="mb-3">
                             <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" placeholder="Subject">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Your Message"></textarea>
+                            <textarea class="form-control" name="message" id="message" rows="4" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -527,6 +624,20 @@ $result = $conn->query($merch_sql);
             </div>
         </div>
     </section><!-- /Testimonials Section -->
+
+    <!-- Chatbot Section -->
+    <script>
+    window.embeddedChatbotConfig = {
+    chatbotId: "n6QilLoDecBUhKqbS5JPL",
+    domain: "www.chatbase.co"
+    }
+    </script>
+    <script
+    src="https://www.chatbase.co/embed.min.js"
+    chatbotId="n6QilLoDecBUhKqbS5JPL"
+    domain="www.chatbase.co"
+    defer>
+    </script><!-- /Chatbot Section -->
 
     <?php include('./footer/merch_footer.php');?>
     

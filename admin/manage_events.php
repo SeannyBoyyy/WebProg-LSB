@@ -7,6 +7,7 @@ if (isset($_POST['upload_event'])) {
     $description = mysqli_real_escape_string($conn, $_POST['description']);
     $event_date = mysqli_real_escape_string($conn, $_POST['event_date']);
     $location = mysqli_real_escape_string($conn, $_POST['location']);
+    $is_featured = isset($_POST['is_featured']) ? 1 : 0;
 
     // Image upload logic
     if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
@@ -47,8 +48,16 @@ if (isset($_POST['upload_event'])) {
         $uploadPath = 'img/' . $newImageName;
 
         if (move_uploaded_file($tmpName, $uploadPath)) {
-            $query = "INSERT INTO events (title, description, event_date, location, image_url, created_at) 
-                      VALUES ('$title', '$description', '$event_date', '$location', '$newImageName', NOW())";
+            // Unset other featured events if this one is set as featured
+            if ($is_featured == 1) {
+                $unsetFeaturedQuery = "UPDATE events SET category = 0";
+                mysqli_query($conn, $unsetFeaturedQuery);
+            }
+
+            // Insert new event with the featured status
+            $query = "INSERT INTO events (title, description, event_date, location, image_url, created_at, category) 
+                      VALUES ('$title', '$description', '$event_date', '$location', '$newImageName', NOW(), '$is_featured')";
+
             if (mysqli_query($conn, $query)) {
                 echo "<script>
                     Swal.fire({
@@ -126,7 +135,18 @@ if (isset($_POST['upload_event'])) {
                                 <label for="image" class="form-label">Upload Image</label>
                                 <input type="file" name="image" class="form-control" accept=".jpg,.jpeg,.png" required>
                             </div>
-                            <div class="col-md-6 d-flex align-items-end">
+                            <div class="col-md-6">
+                                <label for="is_featured" class="form-label">Featured Event</label>
+                                <div class="form-check">
+                                    <input type="checkbox" name="is_featured" value="1" class="form-check-input" id="is_featured" onclick="checkFeatured()">
+                                    <label class="form-check-label" for="is_featured">Set as Featured</label>
+                                </div>
+                                <div id="featuredWarning" class="alert alert-warning mt-2 d-none" role="alert">
+                                    Warning: Setting this event as featured will remove the current featured event.
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 d-flex align-items-end">
                                 <button type="submit" name="upload_event" class="btn btn-primary w-100">
                                     <i class="bi bi-upload"></i> Add Event
                                 </button>
@@ -152,6 +172,7 @@ if (isset($_POST['upload_event'])) {
                                     <th>Date</th>
                                     <th>Location</th>
                                     <th>Image</th>
+                                    <th>Category (1=Featured)</th>
                                     <th>Created At</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -164,12 +185,13 @@ if (isset($_POST['upload_event'])) {
                                         <tr>
                                             <td><?= $row['event_id']; ?></td>
                                             <td><?= htmlspecialchars($row['title']); ?></td>
-                                            <td><?= htmlspecialchars($row['description']); ?></td>
+                                            <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                             <td><?= date('F j, Y', strtotime($row['event_date'])); ?></td>
                                             <td><?= htmlspecialchars($row['location']); ?></td>
                                             <td>
                                                 <img src="img/<?= $row['image_url']; ?>" alt="<?= htmlspecialchars($row['title']); ?>" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
                                             </td>
+                                            <td><?= htmlspecialchars($row['category']); ?></td>
                                             <td><?= date('F j, Y', strtotime($row['created_at'])); ?></td>
                                             <td>
                                                 
@@ -211,6 +233,7 @@ if (isset($_POST['upload_event'])) {
 
 
 <script>
+// Warning when deleting events
 function confirmDeleteEvents(eventId) {
     Swal.fire({
         title: 'Are you sure?',
@@ -245,6 +268,19 @@ function confirmDeleteEvents(eventId) {
             form.submit();
         }
     });
+}
+// Warning when check featured
+function checkFeatured() {
+    const checkbox = document.getElementById('is_featured');
+    const warning = document.getElementById('featuredWarning');
+    
+    if (checkbox.checked) {
+        warning.classList.remove('d-none'); // Show warning
+        // Optionally, add any logic to remove the previous featured event
+        // Example: If using AJAX or form submission, handle that accordingly.
+    } else {
+        warning.classList.add('d-none'); // Hide warning
+    }
 }
 </script>
 

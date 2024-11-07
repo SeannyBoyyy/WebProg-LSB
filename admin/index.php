@@ -1,6 +1,8 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <?php include('../config/config.php'); 
 
+include 'auth.php'; // Check if admin is logged in
+
 // Retrieve active page from query parameter
 $activePage = isset($_GET['active']) ? $_GET['active'] : '';
 
@@ -97,8 +99,10 @@ function isShowActive($page, $activePage) {
                         <i class="bi bi-chat-left-text-fill me-2"></i>Messages
                     </a>
                 </li>
+            </ul>
+            <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link <?php echo isActive('logout', $activePage); ?>" data-bs-toggle="pill" href="#logout">
+                    <a class="nav-link" href="./logout.php">
                         <i class="bi bi-box-arrow-right me-2"></i>Logout
                     </a>
                 </li>
@@ -164,13 +168,6 @@ function isShowActive($page, $activePage) {
                         </div>
                     </div>
 
-                    <!-- Logout Tab -->
-                    <div id="logout" class="tab-pane fade <?php echo isShowActive('logout', $activePage); ?>">
-                        <div class="container mt-4">
-                            <h3>Logout</h3>
-                            <p>You have been logged out.</p>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

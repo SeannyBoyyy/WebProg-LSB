@@ -1,8 +1,58 @@
 <?php include('./config/config.php'); 
 
-// Query to retrieve merchandise items
+// Query to retrieve events items
 $merch_sql = "SELECT * FROM events";
 $result = $conn->query($merch_sql);
+
+// Fetch the featured event
+$query = "SELECT * FROM events WHERE category = 1 LIMIT 1";
+$featured_result = mysqli_query($conn, $query);
+$featured_event = mysqli_fetch_assoc($featured_result);
+
+
+// Contact Us
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Retrieve form data
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $subject = mysqli_real_escape_string($conn, $_POST['subject']);
+    $message = mysqli_real_escape_string($conn, $_POST['message']);
+    $sent_at = date('Y-m-d H:i:s');
+
+    // Insert message into the database
+    $sql = "INSERT INTO messages (name, email, subject, message, sent_at) VALUES ('$name', '$email', '$subject', '$message', '$sent_at')";
+    
+    if (mysqli_query($conn, $sql)) {
+        // Success: Show SweetAlert
+        echo "
+        ...
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        echo "<script>
+            Swal.fire({
+                title: 'Success!',
+                text: 'Your message has been sent successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                window.location = 'news.php';
+            });
+        </script>";
+    } else {
+        echo "...
+        <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
+        // Error: Show SweetAlert
+        echo "<script>
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was an error sending your message. Please try again later.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            }).then(function() {
+                window.location = 'news.php';
+            });
+        </script>";
+    }
+}
 
 ?>
 
@@ -220,9 +270,9 @@ $result = $conn->query($merch_sql);
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
                         <li class="nav-item"><a class="nav-link" href="#spotlight">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#merchandise">Merchandise</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="#events">Events</a></li>
+                        <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                     </ul>
                 </div>
@@ -236,6 +286,27 @@ $result = $conn->query($merch_sql);
             <h1>Explore the Events at <br> Lyceum of Subic Bay</h1>
             <p>Stay updated with the latest events happening at LSB, from esports tournaments to student activities and school-wide celebrations. Don’t miss out on key dates and exciting opportunities to get involved in the campus community!</p>
             <a href="#events" class="btn btn-primary">View Upcoming Events</a>
+        </div>
+    </section>
+
+    <!-- Countdown Timer Section -->
+    <section id="featured-event" class="py-5 text-center" style="background: #e9ecef;">
+        <div class="container">
+            <h2 class="section-title" style="font-size: 2.5rem; font-weight: bold;">Featured</h2>
+            <div class="section-title-hr"><!-- Underline --></div>
+            <?php if ($featured_event): ?>
+                <div class="bg-dark container text-white p-5">
+                    <h2 class="" style="font-size: 2.5rem; font-weight: bold;"><?php echo htmlspecialchars($featured_event['title']); ?></h2>
+                    <p class="text-uppercase mb-4" style="color: #a0c334;">Now You Can Watch the Talent</p>
+                    <div id="countdown" class="fs-1 mb-3" style="font-weight: bold;"></div><!-- Countdown -->
+                    <a href="#featured-event" class="btn btn-success btn-lg mb-4" style="background-color: #a0c334; border-color: #a0c334;">Start In</a>
+                    <p><strong>Date:</strong> <?php echo date('F j - F j, Y', strtotime($featured_event['event_date'])); ?></p>
+                    <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($featured_event['location']); ?></p>
+                    <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 50%;">
+                </div>
+            <?php else: ?>
+                <p>No featured event at the moment.</p>
+            <?php endif; ?>
         </div>
     </section>
 
@@ -299,7 +370,7 @@ $result = $conn->query($merch_sql);
     <section class="py-5" id="contact" style="background: #e9ecef;">
         <div class="container">
             <h2 class="text-center mb-4 section-title">Contact Us</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+            <div class="section-title-hr"></div>
             <div class="row text-center mb-4">
                 <div class="col-md-4 mb-3">
                     <div class="card shadow-sm">
@@ -344,22 +415,22 @@ $result = $conn->query($merch_sql);
                     </div>
                 </div>
                 <div class="col-lg-6">
-                    <form>
+                    <form method="post" action="">
                         <div class="mb-3">
                             <label for="name" class="form-label">Your Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Your Name">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Your Name" required>
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Your Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Your Email">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
                         </div>
                         <div class="mb-3">
                             <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" placeholder="Subject">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
                         </div>
                         <div class="mb-3">
                             <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Your Message"></textarea>
+                            <textarea class="form-control" name="message" id="message" rows="4" placeholder="Your Message" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Send Message</button>
                     </form>
@@ -494,6 +565,48 @@ $result = $conn->query($merch_sql);
             </div>
         </div>
     </section><!-- /Testimonials Section -->
+
+    <!-- Chatbot Section -->
+    <script>
+    window.embeddedChatbotConfig = {
+    chatbotId: "n6QilLoDecBUhKqbS5JPL",
+    domain: "www.chatbase.co"
+    }
+    </script>
+    <script
+    src="https://www.chatbase.co/embed.min.js"
+    chatbotId="n6QilLoDecBUhKqbS5JPL"
+    domain="www.chatbase.co"
+    defer>
+    </script><!-- /Chatbot Section -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            <?php if ($featured_event): ?>
+                const eventDate = new Date("<?php echo $featured_event['event_date']; ?>").getTime();
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const timeLeft = eventDate - now;
+
+                    if (timeLeft > 0) {
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        document.getElementById("countdown").innerHTML =
+                            `${days} Days : ${hours} Hours : ${minutes} Minutes : ${seconds} Seconds`;
+                    } else {
+                        document.getElementById("countdown").innerHTML = "Event has started!";
+                    }
+                }
+
+                setInterval(updateCountdown, 1000);
+            <?php endif; ?>
+        });
+    </script>
+
 
     <?php include('./footer/merch_footer.php');?>
     

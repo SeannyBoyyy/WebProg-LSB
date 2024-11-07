@@ -4,10 +4,20 @@
 $merch_sql = "SELECT * FROM merch";
 $merch_result = $conn->query($merch_sql);
 
-$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events";
+// Fetch the event
+$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events ORDER BY created_at DESC LIMIT 6";
 $events_result = mysqli_query($conn, $events_query);
 
+// Fetch the featured event
+$query = "SELECT * FROM events WHERE category = 1 LIMIT 1";
+$featured_result = mysqli_query($conn, $query);
+$featured_event = mysqli_fetch_assoc($featured_result);
 
+// Fetch latest news from the database
+$sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY published_date DESC LIMIT 4";
+$resultNews = $conn->query($sqlNews);
+
+// Contact Us
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
     $name = mysqli_real_escape_string($conn, $_POST['name']);
@@ -441,8 +451,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- News & Stories Section -->
     <section class="py-5 bg-light" id="news" style="background: #eaeaea;">
         <div class="container">
-            <h2 class="text-center section-title">Latest News & Stories</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+            <div class="row">
+                <div class="col-md-4"></div> <!-- Empty column for spacing -->
+                <div class="col-md-8 d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="section-title mb-0">Latest News And Stories</h2> <!-- Remove extra margin from h2 -->
+                    <a href="news.php" class="text-decoration-none">See all →</a>
+                </div>
+                <div class="col-12">
+                    <div class="section-title-hr"><!-- Underline --></div>
+                </div>
+            </div>
+
             <div class="row my-5">
                 <div class="col-md-12">
                     <div class="card">
@@ -454,44 +473,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 Stay informed about upcoming tournaments, program developments, and community initiatives that celebrate our esports journey. Whether you’re a current 
                                 student, an alumnus, or an esports enthusiast, our stories aim to inspire, engage, and connect you with the vibrant world of esports at LSB. Join us as 
                                 we showcase the dedication and passion of our players and the milestones that make our community truly exceptional!</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
+                            <a href="news.php" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row my-5">
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="img/lsbvarsity_top8.jpg" class="card-img-top" alt="News 1">
-                        <div class="card-body">
-                            <h5 class="card-title">LSB Wins Regional Championship</h5>
-                            <p class="card-text">Our team made a remarkable achievement in the recent championship...</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="img/lsbvarsity_top8.jpg" class="card-img-top" alt="News 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Interview with the Coach</h5>
-                            <p class="card-text">We sat down with Coach Alex to discuss strategies for the upcoming season...</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card">
-                        <img src="img/lsbvarsity_top8.jpg" class="card-img-top" alt="News 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Top 8 and rising! LSB Sharks Delta is making waves in the PCC Tournament. Let's keep the momentum going!
-                                </h5>
-                            <p class="card-text">
-                                To catch up on the latest happenings, updates, and tournaments of LSB Sharks Esports, please follow, like, and share the page.
-                                #LSBSharksUnlimited #BeaLycean #NotJustPlay #MLBB #PCC</p>
-                            <a href="#" class="btn btn-primary">Read More</a>
-                        </div>
-                    </div>
+            <div class="my-5">
+                <div class="row latest-news">
+                    <?php
+                    if ($resultNews->num_rows > 0) {
+                        // Output each news item
+                        while ($row = $resultNews->fetch_assoc()) {
+                            // Construct the image path
+                            $image_path = $row['image_url'] ? './admin/img/' . $row['image_url'] : 'https://via.placeholder.com/150';
+                            $title = htmlspecialchars($row['title']);
+                            $author = htmlspecialchars($row['author']);
+                            $published_date = htmlspecialchars($row['published_date']);
+                            $category = htmlspecialchars($row['category']);
+                            $content = htmlspecialchars($row['content']);
+                            $full_content = htmlspecialchars($row['content']); // Full content for modal
+
+                            // Generate a unique ID for each modal
+                            $modal_id = "newsModal" . $row['news_id'];
+                    ?>
+                            <!-- News Card -->
+                            <div class="col-md-3 mb-3">
+                                <div class="card h-100" style="border: none;">
+                                    <img src="<?php echo $image_path; ?>" class="card-img-top" alt="News Image" style="object-fit: cover; height: 200px;">
+                                    <div class="card-body d-flex flex-column">
+                                        <p class="text-muted"><?php echo $author; ?> • <?php echo $published_date; ?></p>
+                                        <h5 class="card-title"><?php echo $title; ?></h5>
+                                        <p class="text-muted"><?php echo $category; ?> • <?php echo substr($content, 0, 45); ?>
+                                        <a type="button" class="btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modal_id; ?>">See more...</a> </p><!-- See more button to trigger modal -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal for displaying full news content -->
+                            <div class="modal fade" id="<?php echo $modal_id; ?>" tabindex="-1" aria-labelledby="<?php echo $modal_id; ?>Label" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="<?php echo $modal_id; ?>Label"><?php echo $title; ?></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo $image_path; ?>" class="img-fluid mb-3" alt="News Image" style="object-fit: cover; width: 100%; height: 300px;">
+                                            <p><strong>Author:</strong> <?php echo $author; ?></p>
+                                            <p><strong>Published:</strong> <?php echo $published_date; ?></p>
+                                            <p><strong>Category:</strong> <?php echo $category; ?></p>
+                                            <p><strong>Content:</strong> <?php echo $full_content; ?></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    <?php
+                        }
+                    } else {
+                        echo "<p class='text-center'>No news available.</p>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>
@@ -571,20 +615,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Events Section -->
     <section class="py-5 bg-light" id="events" style="background: #f9f9f9;">
         <div class="container">
-            <h2 class="text-center section-title">Upcoming Events</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
-            <div class="text-center mb-4">
-                <div class="bg-dark text-white py-3 px-4 rounded">
-                    <h3>Countdown to LSB Esports Tournament</h3>
-                    <p id="countdown" class="fs-3">10 Days, 5 Hours</p>
-                    <img src="img/lsbvarsity_top8.jpg" class="img-fluid rounded" alt="LSB Esports Tournament" style="max-width: 100%; height: auto;">
+            <!-- Countdown Timer Section -->
+                <div class="container text-center">
+                    <h2 class="section-title" style="font-size: 2.5rem; font-weight: bold;">Featured Event</h2>
+                    <div class="section-title-hr"><!-- Underline --></div>
+                    <?php if ($featured_event): ?>
+                        <div class="bg-dark container text-white p-5 m-3 rounded">
+                            <h2 class="" style="font-size: 2.5rem; font-weight: bold;"><?php echo htmlspecialchars($featured_event['title']); ?></h2>
+                            <p class="text-uppercase mb-4" style="color: #a0c334;">Now You Can Watch the Talent</p>
+                            <div id="countdown" class="fs-1 mb-3" style="font-weight: bold;"></div><!-- Countdown -->
+                            <a href="#featured-event" class="btn btn-success btn-lg mb-4" style="background-color: #a0c334; border-color: #a0c334;">Start In</a>
+                            <p><strong>Date:</strong> <?php echo date('F j - F j, Y', strtotime($featured_event['event_date'])); ?></p>
+                            <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($featured_event['location']); ?></p>
+                            <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 60%;">
+                        </div>
+                    <?php else: ?>
+                        <p>No featured event at the moment.</p>
+                    <?php endif; ?>
                 </div>
-            </div>
-            <div class="text-center mb-4">
-                <a href="#" class="btn btn-primary">View Event Details</a>
-            </div>   
 
-            <h3 class="text-center mb-4">Other Events</h3>
+            <h3 class="text-center mt-4 section-title">Other Events</h3>
+            <div class="section-title-hr"><!-- Underline --></div>
             <div class="row">
                 <?php while ($event = mysqli_fetch_assoc($events_result)) : ?>
                 <div class="col-md-4 mb-4">
@@ -592,7 +643,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($event['title']); ?>">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo htmlspecialchars($event['title']); ?></h5>
-                            <p class="card-text"><?php echo htmlspecialchars($event['description']); ?></p>
+                            <p class="card-text">
+                                <?php 
+                                    $description = htmlspecialchars($event['description']);
+                                    $truncatedDescription = (strlen($description) > 90) ? substr($description, 0, 90) . '...' : $description;
+                                ?>
+                                <span class="short-text"><?php echo $truncatedDescription; ?></span>
+                                <span class="full-text d-none"><?php echo $description; ?></span> <!-- no javascript -->
+                                <?php if (strlen($description) > 90) : ?>
+                                    <a class="see-more text-secondary text-decoration-none">See More</a>
+                                <?php endif; ?>
+                            </p>
+
                             <p class="card-text"><small class="text-muted">Date: <?php echo htmlspecialchars($event['event_date']); ?></small></p>
                             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal<?php echo $event['event_id']; ?>">View Details</button>
                         </div>
@@ -624,7 +686,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <!-- View All Events Button -->
-            <div class="text-center mt-4">
+            <p class="text-center mt-3">To View All The Event - Read All The Event and Participate</p>
+            <div class="text-center">
                 <a href="events.php" class="btn btn-secondary">View All Events</a>
             </div>
 
@@ -832,6 +895,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section><!-- /Testimonials Section -->
+    
+    <!-- Chatbot Section -->
+    <script>
+    window.embeddedChatbotConfig = {
+    chatbotId: "n6QilLoDecBUhKqbS5JPL",
+    domain: "www.chatbase.co"
+    }
+    </script>
+    <script
+    src="https://www.chatbase.co/embed.min.js"
+    chatbotId="n6QilLoDecBUhKqbS5JPL"
+    domain="www.chatbase.co"
+    defer>
+    </script><!-- /Chatbot Section -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            <?php if ($featured_event): ?>
+                const eventDate = new Date("<?php echo $featured_event['event_date']; ?>").getTime();
+
+                function updateCountdown() {
+                    const now = new Date().getTime();
+                    const timeLeft = eventDate - now;
+
+                    if (timeLeft > 0) {
+                        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        document.getElementById("countdown").innerHTML =
+                            `${days} Days : ${hours} Hours : ${minutes} Minutes : ${seconds} Seconds`;
+                    } else {
+                        document.getElementById("countdown").innerHTML = "Event has started!";
+                    }
+                }
+
+                setInterval(updateCountdown, 1000);
+            <?php endif; ?>
+        });
+    </script>
 
     <?php include('./footer/homepage_footer.php'); ?> 
     

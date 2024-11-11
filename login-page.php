@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <!-- Header -->
-    <header id="navbar" class="header py-3" style="background-color: #343a40;">
+    <header id="navbar" class="header py-3" style="background-color: #301934;">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="index.php">Lyceum of Subic Bay</a>

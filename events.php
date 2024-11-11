@@ -109,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .header.scrolled {
-            background-color: #343a40; /* Your desired background color */
+            background-color: #301934; /* Your desired background color */
         }
 
         .navbar-dark .navbar-nav .nav-link {
@@ -269,8 +269,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link active" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>

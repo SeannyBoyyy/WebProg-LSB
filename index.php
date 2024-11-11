@@ -1,11 +1,11 @@
 <?php include('./config/config.php'); 
 
 // Query to retrieve merchandise items
-$merch_sql = "SELECT * FROM merch";
+$merch_sql = "SELECT * FROM merch ORDER BY merch_id DESC";
 $merch_result = $conn->query($merch_sql);
 
 // Fetch the event
-$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events ORDER BY event_id DESC LIMIT 6";
+$events_query = "SELECT event_id, title, description, event_date, location, image_url, created_at FROM events ORDER BY event_id DESC LIMIT 4";
 $events_result = mysqli_query($conn, $events_query);
 
 // Fetch the featured event
@@ -277,8 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#spotlight">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#news">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#spotlight">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="#merchandise">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
@@ -338,11 +337,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center mt-5">
                 <h6>Our Sponsors</h6>
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <img src="img/valo_bg.png" alt="Sponsor 1" class="sponsor-logo">
-                    <img src="img/valo_bg.png" alt="Sponsor 2" class="sponsor-logo">
-                    <img src="img/valo_bg.png" alt="Sponsor 3" class="sponsor-logo">
-                    <img src="img/valo_bg.png" alt="Sponsor 4" class="sponsor-logo">
-                    <img src="img/valo_bg.png" alt="Sponsor 5" class="sponsor-logo">
+                    <img src="img/acad_logo.png" alt="Sponsor 1" class="sponsor-logo">
+                    <img src="img/lyce_logo.png" alt="Sponsor 2" class="sponsor-logo">
+                    <img src="img/prc_logo.png" alt="Sponsor 3" class="sponsor-logo">
+                    <img src="img/vortex_logo.jpg" alt="Sponsor 4" class="sponsor-logo">
+                    <img src="img/Lsb_logo.jpg" alt="Sponsor 5" class="sponsor-logo">
                 </div>
             </div>
         </div>
@@ -390,48 +389,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Testimonial Video Carousel Section -->
     <section class="py-5" id="spotlight" style="background: #fff;">
         <div class="container">
-            <h2 class="text-center section-title">Student Spotlight</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+            <div class="row">
+                <div class="col-md-5"></div> <!-- Empty column for spacing -->
+                <div class="col-md-7 d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="section-title mb-0">Spotlights</h2> <!-- Remove extra margin from h2 -->
+                    <h2 class="section-title">
+                        <a href="news.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+                    </h2>
+                </div>
+                
+                <div class="col-12">
+                    <div class="section-title-hr"><!-- Underline --></div>
+                </div>
+            </div>
             <p class="text-center" style="max-width: 700px; margin: 0 auto; color: #555;">
                 Discover the journeys and achievements of our standout students. These videos showcase the passion, dedication, and success stories of our students, providing a glimpse into their inspiring academic and personal accomplishments.
             </p>
+            
             <div class="position-relative mt-4">
                 <div id="testimonialCarousel" class="carousel slide" data-bs-ride="false">
                     <div class="carousel-inner">
-                        <!-- First Video Item -->
-                        <div class="carousel-item active">
+                        
+                        <?php
+                        // Fetch spotlight records from the database
+                        $resultSpotlight = mysqli_query($conn, "SELECT title, description, video_url FROM spotlight ORDER BY spotlight_id DESC");
+                        $isActive = true; // Flag to set the first carousel item as active
+                        
+                        while ($row = mysqli_fetch_assoc($resultSpotlight)) {
+                            $activeClass = $isActive ? 'active' : ''; // Add 'active' class only for the first item
+                            $isActive = false; // Set flag to false after first item
+                        ?>
+                        
+                        <!-- Spotlight Video Item -->
+                        <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="d-flex justify-content-center">
                                 <video class="w-75" controls>
-                                    <source src="vid/bsba.mp4" type="video/mp4">
+                                    <source src="./admin/vid/<?php echo htmlspecialchars($row['video_url']); ?>" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             </div>
                             <div class="text-center mt-3">
-                                <h5>John Doe - BSBA Journey</h5>
+                                <h5><?php echo htmlspecialchars($row['title']); ?></h5>
                                 <p style="color: #555; max-width: 600px; margin: 0 auto;">
-                                    John shares his experiences as a Business Administration student, highlighting the challenges and rewards of his academic journey.
+                                    <?php echo htmlspecialchars($row['description']); ?>
                                 </p>
                             </div>
                         </div>
-                        <!-- Second Video Item -->
-                        <div class="carousel-item">
-                            <div class="d-flex justify-content-center">
-                                <video class="w-75" controls>
-                                    <source src="vid/bsba.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                            <div class="text-center mt-3">
-                                <h5>Jane Smith - Computer Science Achievements</h5>
-                                <p style="color: #555; max-width: 600px; margin: 0 auto;">
-                                    Jane discusses her journey in Computer Science, her achievements in programming, and her aspirations for the future.
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Add more carousel items as needed -->
+                        
+                        <?php } ?>
+                        
                     </div>
                     
-                    <!-- Controls positioned outside the carousel items -->
+                    <!-- Carousel Controls -->
                     <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="transform: translateX(-50%);">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
@@ -446,8 +455,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
 
-
-
     <!-- News & Stories Section -->
     <section class="py-5" id="news" style="background: #eaeaea;">
         <div class="container">
@@ -455,8 +462,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="col-md-4"></div> <!-- Empty column for spacing -->
                 <div class="col-md-8 d-flex justify-content-between align-items-center mb-3">
                     <h2 class="section-title mb-0">Latest News And Stories</h2> <!-- Remove extra margin from h2 -->
-                    <a href="news.php" class="text-decoration-none">See all →</a>
+                    <h2 class="section-title">
+                        <a href="news.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+                    </h2>
                 </div>
+                
                 <div class="col-12">
                     <div class="section-title-hr"><!-- Underline --></div>
                 </div>
@@ -538,14 +548,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     ?>
                 </div>
             </div>
+
+            <p class="text-center mt-3">To View All The News, Stories and Spotlight - Read All The News, Stories, Spotlight and Participate</p>
+            <div class="text-center">
+                <a href="events.php" class="btn btn-primary">View All Events</a>
+            </div>
         </div>
     </section>
 
     <!-- Merchandise Section -->
     <section class="py-5" id="merchandise" style="background: #fff;">
         <div class="container">
-            <h2 class="text-center section-title">LSB Esports Merchandise</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
+            <div class="row">
+                <div class="col-md-4"></div> <!-- Empty column for spacing -->
+                <div class="col-md-8 d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="section-title mb-0">LSB Esports Merchandise</h2> <!-- Remove extra margin from h2 -->
+                    <h2 class="section-title">
+                        <a href="merch.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+                    </h2>
+                </div>
+                
+                <div class="col-12">
+                    <div class="section-title-hr"><!-- Underline --></div>
+                </div>
+            </div>
+            
             <div class="row my-5">
                 <div class="col-md-12">
                     <div class="card">
@@ -615,74 +642,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Events Section -->
     <section class="py-5" id="events" style="background: #f9f9f9;">
         <div class="container">
-            <!-- Countdown Timer Section -->
-                <div class="container text-center">
-                    <h2 class="section-title" style="font-size: 2.5rem; font-weight: bold;">Featured Event</h2>
-                    <div class="section-title-hr"><!-- Underline --></div>
+        <!-- Introduction -->
+        <h2 class="section-title d-flex align-items-center justify-content-between" style="font-size: 2.5rem; font-weight: bold;">
+            Upcoming Events
+            <a href="events.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+        </h2>
+        <p class="mb-5" style="font-size: 1.2rem;">
+            Join us for exciting events showcasing incredible talents, inspiring experiences, and opportunities to connect. Explore our featured and upcoming events below, and don’t miss out on a chance to participate!
+        </p>
+
+            <div class="row">
+                <!-- Featured Event Column -->
+                <div class="col-lg-6 mb-4">
+                    <h3 class="section-title text-center">Featured</h3>
+                    <div class="section-title-hr"></div>
                     <?php if ($featured_event): ?>
-                        <div class="bg-dark container text-white p-5 m-3 rounded">
-                            <h2 class="" style="font-size: 2.5rem; font-weight: bold;"><?php echo htmlspecialchars($featured_event['title']); ?></h2>
+                        <div class="bg-dark text-white p-4 rounded">
+                            <h2 style="font-size: 2rem; font-weight: bold;"><?php echo htmlspecialchars($featured_event['title']); ?></h2>
                             <p class="text-uppercase mb-4" style="color: #a0c334;">Now You Can Watch the Talent</p>
-                            <div id="countdown" class="fs-1 mb-3" style="font-weight: bold;"></div><!-- Countdown -->
+                            <div id="countdown" class="fs-1 mb-3" style="font-weight: bold;"></div>
                             <a href="#featured-event" class="btn btn-success btn-lg mb-4" style="background-color: #a0c334; border-color: #a0c334;">Start In</a>
                             <p><strong>Date:</strong> <?php echo date('F j - F j, Y', strtotime($featured_event['event_date'])); ?></p>
                             <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($featured_event['location']); ?></p>
-                            <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 60%;">
+                            <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 100%;">
                         </div>
                     <?php else: ?>
                         <p>No featured event at the moment.</p>
                     <?php endif; ?>
                 </div>
 
-            <h3 class="text-center mt-4 section-title">Other Events</h3>
-            <div class="section-title-hr"><!-- Underline --></div>
-            <div class="row">
-                <?php while ($event = mysqli_fetch_assoc($events_result)) : ?>
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($event['title']); ?>">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo htmlspecialchars($event['title']); ?></h5>
-                            <p class="card-text">
-                                <?php 
-                                    $description = htmlspecialchars($event['description']);
-                                    $truncatedDescription = (strlen($description) > 90) ? substr($description, 0, 90) . '...' : $description;
-                                ?>
-                                <span class="short-text"><?php echo $truncatedDescription; ?></span>
-                                <span class="full-text d-none"><?php echo $description; ?></span> <!-- no javascript -->
-                                <?php if (strlen($description) > 90) : ?>
-                                    <a class="see-more text-secondary text-decoration-none">See More</a>
-                                <?php endif; ?>
-                            </p>
-
-                            <p class="card-text"><small class="text-muted">Date: <?php echo htmlspecialchars($event['event_date']); ?></small></p>
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal<?php echo $event['event_id']; ?>">View Details</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal for each event -->
-                <div class="modal fade" id="eventModal<?php echo $event['event_id']; ?>" tabindex="-1" aria-labelledby="eventModalLabel<?php echo $event['event_id']; ?>" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="eventModalLabel<?php echo $event['event_id']; ?>"><?php echo htmlspecialchars($event['title']); ?></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="img-fluid mb-3" alt="Event Image">
-                                <p><?php echo htmlspecialchars($event['description']); ?></p>
-                                <p><strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?></p>
-                                <p><strong>Location:</strong> <?php echo htmlspecialchars($event['location']); ?></p>
-                                <p><small class="text-muted"><strong>Posted on:</strong> <?php echo htmlspecialchars(date("F j, Y", strtotime($event['created_at']))); ?></small></p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- Other Events Column -->
+                <div class="col-lg-6">
+                    <h3 class="section-title text-center">Others</h3>
+                    <div class="section-title-hr"></div>
+                    <div class="row">
+                        <?php while ($event = mysqli_fetch_assoc($events_result)) : ?>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($event['title']); ?>">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($event['title']); ?></h5>
+                                    <p class="card-text">
+                                        <?php 
+                                            $description = htmlspecialchars($event['description']);
+                                            $truncatedDescription = (strlen($description) > 60) ? substr($description, 0, 60) . '...' : $description;
+                                        ?>
+                                        <span class="short-text"><?php echo $truncatedDescription; ?></span>
+                                        <span class="full-text d-none"><?php echo $description; ?></span>
+                                        <?php if (strlen($description) > 60) : ?>
+                                            <a class="see-more text-secondary text-decoration-none">See More</a>
+                                        <?php endif; ?>
+                                    </p>
+                                    <p class="card-text"><small class="text-muted">Date: <?php echo htmlspecialchars($event['event_date']); ?></small></p>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal<?php echo $event['event_id']; ?>">View Details</button>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Modal for each event -->
+                        <div class="modal fade" id="eventModal<?php echo $event['event_id']; ?>" tabindex="-1" aria-labelledby="eventModalLabel<?php echo $event['event_id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="eventModalLabel<?php echo $event['event_id']; ?>"><?php echo htmlspecialchars($event['title']); ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="img-fluid mb-3" alt="Event Image">
+                                        <p><?php echo htmlspecialchars($event['description']); ?></p>
+                                        <p><strong>Date:</strong> <?php echo htmlspecialchars($event['event_date']); ?></p>
+                                        <p><strong>Location:</strong> <?php echo htmlspecialchars($event['location']); ?></p>
+                                        <p><small class="text-muted"><strong>Posted on:</strong> <?php echo htmlspecialchars(date("F j, Y", strtotime($event['created_at']))); ?></small></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endwhile; ?>
                     </div>
                 </div>
-                <?php endwhile; ?>
             </div>
 
             <!-- View All Events Button -->
@@ -690,7 +730,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="text-center">
                 <a href="events.php" class="btn btn-secondary">View All Events</a>
             </div>
-
         </div>
     </section>
 

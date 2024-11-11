@@ -6,7 +6,7 @@ $merch_sql = "SELECT * FROM merch WHERE category = 'regular'";
 $result = $conn->query($merch_sql);
 
 // Query to get the featured news article
-$queryFeaturedNews = "SELECT * FROM news WHERE category = 'Featured' ORDER BY published_date DESC LIMIT 1";
+$queryFeaturedNews = "SELECT * FROM news WHERE category = 'Featured' ORDER BY news_id DESC LIMIT 1";
 $resultFeaturedNews = mysqli_query($conn, $queryFeaturedNews);
 $featuredNews = mysqli_fetch_assoc($resultFeaturedNews);
 
@@ -15,7 +15,7 @@ $sqlSpotlight = "SELECT * FROM spotlight";
 $resultSpotlight = $conn->query($sqlSpotlight);
 
 // Fetch latest news from the database
-$sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY published_date DESC LIMIT 4";
+$sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY news_id DESC";
 $resultNews = $conn->query($sqlNews);
 
 // Process the form submission
@@ -42,21 +42,47 @@ if (isset($_POST['submit_news'])) {
                       VALUES ('$title', '$content', '$author', '$newImageName', NOW(), 'pending')";
             
             if (mysqli_query($conn, $query)) {
-                echo "<script>
-                    alert('News submitted successfully. Awaiting admin approval.');
-                    window.location.href = 'news.php';
+                echo "...
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                <script>
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'News submitted successfully. Awaiting admin approval.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = 'news.php';
+                    });
                 </script>";
             } else {
-                echo "<script>alert('Error submitting news. Please try again.');</script>";
+                echo "...
+                <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+                <script>
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Error submitting news. Please try again.',
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                </script>";
             }
         } else {
-            echo "<script>alert('Invalid image. Please upload a JPG or PNG file up to 1MB.');</script>";
+            echo "...
+            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+            <script>
+                Swal.fire({
+                    title: 'Invalid Image',
+                    text: 'Please upload a JPG or PNG file up to 1MB.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK'
+                });
+            </script>";
         }
     }
 }
 
 // Contact Us
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if (isset($_POST['send_message'])) {
     // Retrieve form data
     $name = mysqli_real_escape_string($conn, $_POST['name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
@@ -155,7 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .header.scrolled {
-            background-color: #343a40; /* Your desired background color */
+            background-color: #301934; /* Your desired background color */
         }
 
         .navbar-dark .navbar-nav .nav-link {
@@ -315,13 +341,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="news.php">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link active" href="news.php">News</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                     </ul>
-                </div>
+                </div>  
             </nav>
         </div>
     </header>
@@ -337,7 +362,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Header Section -->
-    <section class="tagline text-center" style="font-size: 1.2rem; padding: 15px;">
+    <section class="tagline text-center py-5" style="font-size: 1.2rem; padding: 15px;">
         <div class="container rounded shadow p-5" style="background-color: #e9ecef;">
             <p class="text-muted mb-1">WELCOME TO BULLETIN</p>
             <h2>Craft narratives ✍️ that ignite <span class="text-danger">inspiration💡</span>, <span class="text-primary">knowledge 📚</span>, and <span class="text-warning">entertainment 🎬</span></h2>
@@ -367,87 +392,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </section>
 
     <!-- Latest News Section -->
-    <section class="container my-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4>Latest News</h4>
-            <a href="#" class="text-decoration-none">See all →</a>
-        </div>
-        <div class="row latest-news">
-            <?php
-            if ($resultNews->num_rows > 0) {
-                // Output each news item
-                while ($row = $resultNews->fetch_assoc()) {
-                    // Construct the image path
-                    $image_path = $row['image_url'] ? './admin/img/' . $row['image_url'] : 'https://via.placeholder.com/150';
-                    $title = htmlspecialchars($row['title']);
-                    $author = htmlspecialchars($row['author']);
-                    $published_date = htmlspecialchars($row['published_date']);
-                    $category = htmlspecialchars($row['category']);
-                    $content = htmlspecialchars($row['content']);
-                    $full_content = htmlspecialchars($row['content']); // Full content for modal
+    <section class="py-5" style="background: #f3f4f6;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4>Latest News</h4>
+            </div>
+            <div class="row latest-news">
+                <?php
+                if ($resultNews->num_rows > 0) {
+                    // Output each news item
+                    while ($row = $resultNews->fetch_assoc()) {
+                        // Construct the image path
+                        $image_path = $row['image_url'] ? './admin/img/' . $row['image_url'] : 'https://via.placeholder.com/150';
+                        $title = htmlspecialchars($row['title']);
+                        $author = htmlspecialchars($row['author']);
+                        $published_date = htmlspecialchars($row['published_date']);
+                        $category = htmlspecialchars($row['category']);
+                        $content = htmlspecialchars($row['content']);
+                        $full_content = htmlspecialchars($row['content']); // Full content for modal
 
-                    // Generate a unique ID for each modal
-                    $modal_id = "newsModal" . $row['news_id'];
-            ?>
-                    <!-- News Card -->
-                    <div class="col-md-3 mb-3">
-                        <div class="card h-100" style="border: none;">
-                            <img src="<?php echo $image_path; ?>" class="card-img-top" alt="News Image" style="object-fit: cover; height: 200px;">
-                            <div class="card-body d-flex flex-column">
-                                <p class="text-muted"><?php echo $author; ?> • <?php echo $published_date; ?></p>
-                                <h5 class="card-title"><?php echo $title; ?></h5>
-                                <p class="text-muted"><?php echo $category; ?> • <?php echo substr($content, 0, 45); ?>
-                                <a type="button" class="btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modal_id; ?>">See more...</a> </p><!-- See more button to trigger modal -->
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modal for displaying full news content -->
-                    <div class="modal fade" id="<?php echo $modal_id; ?>" tabindex="-1" aria-labelledby="<?php echo $modal_id; ?>Label" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="<?php echo $modal_id; ?>Label"><?php echo $title; ?></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <img src="<?php echo $image_path; ?>" class="img-fluid mb-3" alt="News Image" style="object-fit: cover; width: 100%; height: 300px;">
-                                    <p><strong>Author:</strong> <?php echo $author; ?></p>
-                                    <p><strong>Published:</strong> <?php echo $published_date; ?></p>
-                                    <p><strong>Category:</strong> <?php echo $category; ?></p>
-                                    <p><strong>Content:</strong> <?php echo $full_content; ?></p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        // Generate a unique ID for each modal
+                        $modal_id = "newsModal" . $row['news_id'];
+                ?>
+                        <!-- News Card -->
+                        <div class="col-md-3 mb-3">
+                            <div class="card h-100" style="border: none;">
+                                <img src="<?php echo $image_path; ?>" class="card-img-top" alt="News Image" style="object-fit: cover; height: 200px;">
+                                <div class="card-body d-flex flex-column">
+                                    <p class="text-muted"><?php echo $author; ?> • <?php echo $published_date; ?></p>
+                                    <h5 class="card-title"><?php echo $title; ?></h5>
+                                    <p class="text-muted"><?php echo $category; ?> • <?php echo substr($content, 0, 45); ?>
+                                    <a type="button" class="btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modal_id; ?>">See more...</a> </p><!-- See more button to trigger modal -->
                                 </div>
                             </div>
                         </div>
-                    </div>
-            <?php
+
+                        <!-- Modal for displaying full news content -->
+                        <div class="modal fade" id="<?php echo $modal_id; ?>" tabindex="-1" aria-labelledby="<?php echo $modal_id; ?>Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="<?php echo $modal_id; ?>Label"><?php echo $title; ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="<?php echo $image_path; ?>" class="img-fluid mb-3" alt="News Image" style="object-fit: cover; width: 100%; height: 300px;">
+                                        <p><strong>Author:</strong> <?php echo $author; ?></p>
+                                        <p><strong>Published:</strong> <?php echo $published_date; ?></p>
+                                        <p><strong>Category:</strong> <?php echo $category; ?></p>
+                                        <p><strong>Content:</strong> <?php echo $full_content; ?></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <?php
+                    }
+                } else {
+                    echo "<p class='text-center'>No news available.</p>";
                 }
-            } else {
-                echo "<p class='text-center'>No news available.</p>";
-            }
-            ?>
+                ?>
+            </div>
         </div>
     </section>
-
-
-    <!-- Features Section - Carousel -->
-    <section class="py-5" id="features" style="background: #e9ecef;">
-        
-    </section>
-
-
-    <!-- News Section -->
-    <section class="py-5 bg-light" id="news" style="background: #f3f4f6;">
-       
-    </section>
-
 
     <!-- Spotlight --> 
     <!-- Testimonial Video Carousel Section -->
-    <section class="py-5" id="spotlight" style="background: #fff;">
+    <section class="py-5" id="spotlight" style="background: #e9ecef;">
         <div class="container">
             <h2 class="text-center section-title">Student Spotlight</h2>
             <div class="section-title-hr"><!-- Underline --></div>
@@ -457,42 +470,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="position-relative mt-4">
                 <div id="testimonialCarousel" class="carousel slide" data-bs-ride="false">
                     <div class="carousel-inner">
-
-                        <?php if ($resultSpotlight->num_rows > 0): ?>
-                            <?php $isActive = true; ?>
-                            <?php while ($row = $resultSpotlight->fetch_assoc()): ?>
-                                <div class="carousel-item <?php echo $isActive ? 'active' : ''; ?>" style="height: 700px;"> <!-- Fixed height for carousel item -->
-                                    <div class="d-flex flex-column justify-content-center align-items-center h-100">
-                                        <div class="video-container" style="width: 75%; height: auto;">
-                                            <!-- Thumbnail Image with Play Button -->
-                                            <div class="video-thumbnail" onclick="playVideo('<?php echo $row['spotlight_id']; ?>')" style="cursor: pointer; position: relative; height: auto; overflow: hidden;">
-                                                <img src="<?php echo './admin/img/' . $row['featured_image_url']; ?>" class="img-fluid" alt="Play Video" style="width: 100%; height: auto; object-fit: cover;">
-                                                <!-- Overlay Play Icon -->
-                                                <span class="position-absolute top-50 start-50 translate-middle" style="font-size: 3em; color: white;">
-                                                    <i class="bi bi-play"></i>
-                                                </span>
-                                            </div>
-                                            <!-- Video Element, Initially Hidden -->
-                                            <video id="video-<?php echo $row['spotlight_id']; ?>" class="w-100" controls style="display: none; height: auto;">
-                                                <source src="<?php echo './admin/vid/' . $row['video_url']; ?>" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
-                                        <div class="text-center mt-3">
-                                            <h5><?php echo $row['title']; ?></h5>
-                                            <p style="color: #555; max-width: 600px; margin: 0 auto;">
-                                                <?php echo $row['description']; ?>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php $isActive = false; ?>
-                            <?php endwhile; ?>
-                        <?php else: ?>
-                            <p class="text-center">No spotlight videos available.</p>
-                        <?php endif; ?>
+                        
+                        <?php
+                        // Fetch spotlight records from the database
+                        $resultSpotlight = mysqli_query($conn, "SELECT title, description, video_url FROM spotlight ORDER BY spotlight_id DESC");
+                        $isActive = true; // Flag to set the first carousel item as active
+                        
+                        while ($row = mysqli_fetch_assoc($resultSpotlight)) {
+                            $activeClass = $isActive ? 'active' : ''; // Add 'active' class only for the first item
+                            $isActive = false; // Set flag to false after first item
+                        ?>
+                        
+                        <!-- Spotlight Video Item -->
+                        <div class="carousel-item <?php echo $activeClass; ?>">
+                            <div class="d-flex justify-content-center">
+                                <video class="w-75" controls>
+                                    <source src="./admin/vid/<?php echo htmlspecialchars($row['video_url']); ?>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="text-center mt-3">
+                                <h5><?php echo htmlspecialchars($row['title']); ?></h5>
+                                <p style="color: #555; max-width: 600px; margin: 0 auto;">
+                                    <?php echo htmlspecialchars($row['description']); ?>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <?php } ?>
+                        
                     </div>
-
+                    
                     <!-- Carousel Controls -->
                     <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="transform: translateX(-50%);">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -505,28 +513,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
         </div>
-    </section>
-
-
-    <script>
-    function playVideo(spotlightId) {
-        // Hide the thumbnail image
-        const thumbnail = document.querySelector(`#video-${spotlightId}`).previousElementSibling;
-        thumbnail.style.display = 'none';
-
-        // Display the video and play it
-        const video = document.getElementById(`video-${spotlightId}`);
-        video.style.display = 'block';
-        video.play();
-    }
-    </script>
-
-
-
-
-    <!-- News & Stories Section -->
-    <section class="py-5 bg-light" id="news" style="background: #eaeaea;">
-        
     </section>
 
     <!-- Upload News Section -->
@@ -585,13 +571,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section>
-
-
-    <!-- Events Section -->
-    <section class="py-5 bg-light" id="events" style="background: #f9f9f9;">
-        
-    </section>
-
 
     <!-- Contact Section -->
     <section class="py-5" id="contact" style="background: #e9ecef;">
@@ -659,7 +638,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <label for="message" class="form-label">Message</label>
                             <textarea class="form-control" name="message" id="message" rows="4" placeholder="Your Message" required></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
+                        <button type="submit" class="btn btn-primary" name="send_message">Send Message</button>
                     </form>
                 </div>
             </div>

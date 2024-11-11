@@ -108,7 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         .header.scrolled {
-            background-color: #343a40; /* Your desired background color */
+            background-color: #301934; /* Your desired background color */
         }
 
         .navbar-dark .navbar-nav .nav-link {
@@ -268,8 +268,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
+                        <li class="nav-item"><a class="nav-link" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link active" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
@@ -299,21 +298,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="carousel-inner p-5">
 
                     <?php
-                    $isActive = true; // Flag for setting the first item as active
+                    $isActive = true;
                     while ($row = mysqli_fetch_assoc($resultFeatured)) {
-                        $activeClass = $isActive ? 'active' : ''; // Set 'active' class for the first slide
-                        $isActive = false; // Set flag to false after first iteration
+                        $activeClass = $isActive ? 'active' : '';
+                        $isActive = false;
                         ?>
                         <div class="carousel-item <?php echo $activeClass; ?>">
                             <div class="row align-items-center">
                                 <div class="col-md-6 text-content p-5">
-                                    <span class="badge bg-success">Merchandise </span>
+                                    <span class="badge bg-success">Merchandise</span>
                                     <h3 class="fw-bold mt-3"><?php echo htmlspecialchars($row['name']); ?></h3>
                                     <p class="lead"><?php echo htmlspecialchars($row['description']); ?></p>
                                     <div class="additional-info">
-                                    <span><i class="bi bi-calendar"></i> <?php echo htmlspecialchars(date('F j, Y', strtotime($row['created_at']))); ?></span>
-                                    <br><span><i class="bi bi-bag"></i> <?php echo htmlspecialchars($row['stock_quantity']); ?> in stock</span>
-                                    <br><span><i class="bi bi-cash"></i> Price: PHP<?php echo number_format(htmlspecialchars($row['price']), 2); ?></span>
+                                        <span><i class="bi bi-calendar"></i> <?php echo htmlspecialchars(date('F j, Y', strtotime($row['created_at']))); ?></span>
+                                        <br><span><i class="bi bi-bag"></i> <?php echo htmlspecialchars($row['stock_quantity']); ?> in stock</span>
+                                        <br><span><i class="bi bi-cash"></i> Price: PHP<?php echo number_format(htmlspecialchars($row['price']), 2); ?></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -329,14 +328,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <!-- Carousel Indicators -->
                 <div class="carousel-indicators">
                     <?php
-                    mysqli_data_seek($resultFeatured, 0); // Reset result pointer to the beginning
+                    mysqli_data_seek($resultFeatured, 0);
                     $slideIndex = 0;
                     while ($row = mysqli_fetch_assoc($resultFeatured)) {
                         $activeClass = $slideIndex === 0 ? 'active' : '';
                         ?>
-                        <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="<?php echo $slideIndex; ?>" class="<?php echo $activeClass; ?>"
-                            aria-current="<?php echo $activeClass ? 'true' : 'false'; ?>" aria-label="Slide <?php echo $slideIndex + 1; ?>"
-                            style="width: 10px; height: 10px; background-color: <?php echo $activeClass ? 'black' : '#6c757d'; ?>; border-radius: 50%; border: none; opacity: 0.7;"></button>
+                        <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="<?php echo $slideIndex; ?>" class="<?php echo $activeClass; ?>" aria-label="Slide <?php echo $slideIndex + 1; ?>"></button>
                         <?php
                         $slideIndex++;
                     }
@@ -345,6 +342,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section>
+
+    <style>
+        /* Indicator styling */
+        .carousel-indicators [data-bs-target] {
+            width: 10px;
+            height: 10px;
+            background-color: #6c757d; /* Default color for inactive indicators */
+            border-radius: 50%;
+            border: none;
+            opacity: 0.7;
+        }
+        .carousel-indicators .active {
+            background-color: black; /* Color for active indicator */
+        }
+    </style>
+
 
 
     <!-- Items Section -->
@@ -400,30 +413,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section>
-
-
-    <!-- Spotlight --> 
-    <!-- Testimonial Video Carousel Section -->
-    <section class="py-5" id="spotlight" style="background: #fff;">
-        
-    </section>
-
-
-    <!-- News & Stories Section -->
-    <section class="py-5 bg-light" id="news" style="background: #eaeaea;">
-        
-    </section>
-
-    <!-- Merchandise Section -->
-    <section class="py-5" id="merchandise" style="background: #fff;">
- 
-    </section>
-
-    <!-- Events Section -->
-    <section class="py-5 bg-light" id="events" style="background: #f9f9f9;">
-        
-    </section>
-
 
     <!-- Contact Section -->
     <section class="py-5" id="contact" style="background: #e9ecef;">

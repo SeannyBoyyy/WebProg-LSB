@@ -2,7 +2,7 @@
 include('../config/config.php');
 
 // Fetch messages from the database
-$query = "SELECT message_id, name, email, subject, message, sent_at FROM messages ORDER BY sent_at DESC";
+$query = "SELECT message_id, name, email, subject, message, sent_at FROM messages ORDER BY message_id DESC";
 $result = mysqli_query($conn, $query);
 
 // Check if query was successful and fetch data into an array

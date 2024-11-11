@@ -55,9 +55,13 @@ if (isset($_POST['upload_news'])) {
     }
 }
 
-// Retrieve all news articles from the database
-$query = "SELECT * FROM news";
-$result = mysqli_query($conn, $query);
+// Retrieve pending and published news articles separately
+$pendingQuery = "SELECT * FROM news WHERE category = 'Pending'";
+$pendingResult = mysqli_query($conn, $pendingQuery);
+
+$newsQuery = "SELECT * FROM news WHERE category != 'Pending'";
+$newsResult = mysqli_query($conn, $newsQuery);
+
 ?>
 
 <div class="container mt-5">
@@ -97,17 +101,63 @@ $result = mysqli_query($conn, $query);
         </div>
     </div>
 
-    <!-- News List Table -->
-    <div class="card shadow-sm">
+    <!-- Pending News Table -->
+    <div class="card shadow-sm mb-5">
         <div class="card-body">
-            <h5 class="card-title mb-3">News List</h5>
+            <h5 class="card-title mb-3">Pending News</h5>
             <table class="table table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Content</th>
-                        <th>Image</th> <!-- New column for the image -->
+                        <th>Image</th>
+                        <th>Author</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($pendingResult && $pendingResult->num_rows > 0): ?>
+                        <?php while($row = $pendingResult->fetch_assoc()): ?>
+                            <tr>
+                                <td><?= $row['news_id']; ?></td>
+                                <td><?= $row['title']; ?></td>
+                                <td><?= htmlspecialchars(substr($row['content'], 0, 25) . '...'); ?></td>
+                                <td><img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"></td>
+                                <td><?= $row['author']; ?></td>
+                                <td>
+                                    <form action="crud.php" method="post">
+                                        <input type="hidden" name="id" value="<?= $row['news_id']; ?>">
+                                        <button type="submit" name="publish_news" class="btn btn-sm btn-outline-success mt-2">Publish</button>
+                                        
+                                        <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteNews(<?= $row['news_id']; ?>)">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No pending news.</td>
+                        </tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Published News Table -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title mb-3">Published News</h5>
+            <table class="table table-hover align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Image</th>
                         <th>Author</th>
                         <th>Category</th>
                         <th>Published Date</th>
@@ -115,60 +165,42 @@ $result = mysqli_query($conn, $query);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($result && $result->num_rows > 0): ?>
-                        <?php while($row = $result->fetch_assoc()): ?>
+                    <?php if ($newsResult && $newsResult->num_rows > 0): ?>
+                        <?php while($row = $newsResult->fetch_assoc()): ?>
                             <tr>
                                 <td><?= $row['news_id']; ?></td>
                                 <td><?= $row['title']; ?></td>
                                 <td><?= htmlspecialchars(substr($row['content'], 0, 25) . '...'); ?></td>
-                                <td>
-                                    <?php if (!empty($row['image_url'])): ?>
-                                        <img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"> <!-- Display image -->
-                                    <?php else: ?>
-                                        No Image
-                                    <?php endif; ?>
-                                </td>
+                                <td><img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"></td>
                                 <td><?= $row['author']; ?></td>
                                 <td><?= $row['category']; ?></td>
                                 <td><?= $row['published_date'] ? $row['published_date'] : 'Not Published'; ?></td>
                                 <td>
                                     <form action="crud.php" method="post">
-
                                         <input type="hidden" name="id" value="<?= $row['news_id']; ?>">
-                                        
-                                        <!-- Publish Button (for pending news) -->
-                                        <?php if ($row['category'] == 'Pending'): ?>
-                                            <button type="submit" name="publish_news" class="btn btn-sm btn-outline-success mt-2">Publish</button>
-                                        <?php endif; ?>
-                                        
-                                        <!-- Edit Button -->
                                         <button type="submit" class="btn btn-sm btn-outline-primary mt-2" name="news_edit">
                                             <i class="bi bi-pencil-square"></i> Edit
                                         </button>
-
-                                        <!-- Read Button -->
                                         <button type="submit" class="btn btn-sm btn-outline-info mt-2" name="news_read">
                                             <i class="bi bi-eye"></i> Read
                                         </button>
-
-                                        <!-- Delete Button with SweetAlert -->
                                         <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteNews(<?= $row['news_id']; ?>)">
                                             <i class="bi bi-trash"></i> Delete
                                         </button>
-                                
                                     </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="6" class="text-center text-muted">No news available.</td>
+                            <td colspan="8" class="text-center text-muted">No published news.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
+
 </div>
 
 <script>

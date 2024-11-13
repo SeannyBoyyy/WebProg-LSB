@@ -115,9 +115,18 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>
                                 <td><?= $row['created_at']; ?></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteProgram(<?= $row['program_id']; ?>)">
+                                <form action="crud.php" method="post" id="deleteForm<?= $row['program_id']; ?>">
+                                    <input type="hidden" name="id" value="<?= $row['program_id']; ?>">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary mt-2" name="program_edit">
+                                        <i class="bi bi-pencil-square"></i> Edit
+                                    </button>
+                                    <button type="submit" class="btn btn-sm btn-outline-info mt-2" name="program_read">
+                                        <i class="bi bi-eye"></i> Read
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteProgram(<?= $row['program_id']; ?>)">
                                         <i class="bi bi-trash"></i> Delete
                                     </button>
+                                </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -156,9 +165,18 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>
                                 <td><?= $row['created_at']; ?></td>
                                 <td>
-                                    <button class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteProgram(<?= $row['program_id']; ?>)">
-                                        <i class="bi bi-trash"></i> Delete
-                                    </button>
+                                    <form action="crud.php" method="post" id="deleteForm<?= $row['program_id']; ?>">
+                                        <input type="hidden" name="id" value="<?= $row['program_id']; ?>">
+                                        <button type="submit" class="btn btn-sm btn-outline-primary mt-2" name="program_edit">
+                                            <i class="bi bi-pencil-square"></i> Edit
+                                        </button>
+                                        <button type="submit" class="btn btn-sm btn-outline-info mt-2" name="program_read">
+                                            <i class="bi bi-eye"></i> Read
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="confirmDeleteProgram(<?= $row['program_id']; ?>)">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -185,23 +203,16 @@ function confirmDeleteProgram(programId) {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            const form = document.createElement('form');
-            form.method = 'post';
-            form.action = 'crud.php';
-
-            const inputId = document.createElement('input');
-            inputId.type = 'hidden';
-            inputId.name = 'id';
-            inputId.value = programId;
-            form.appendChild(inputId);
-
+            // Locate the form by the program ID
+            const form = document.getElementById('deleteForm' + programId);
+            
+            // Add the delete_program input dynamically
             const inputDelete = document.createElement('input');
             inputDelete.type = 'hidden';
             inputDelete.name = 'delete_program';
-            inputDelete.value = '1';
             form.appendChild(inputDelete);
 
-            document.body.appendChild(form);
+            // Submit the form after adding the hidden input
             form.submit();
         }
     })

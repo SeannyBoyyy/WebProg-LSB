@@ -269,15 +269,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 Programs
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                                <li><a class="dropdown-item" href="#overview">Overview</a></li>
-                                <li><a class="dropdown-item" href="#senior_high">Senior High</a></li>
-                                <li><a class="dropdown-item" href="#college">College</a></li>
+                                <li><a class="dropdown-item" href="overview.php">Overview</a></li>
+                                <li><a class="dropdown-item" href="senior_high.php">Senior High</a></li>
+                                <li><a class="dropdown-item" href="college.php">College</a></li>
                             </ul>
                         </li>
                         <!-- Other Navbar Items -->
                         <li class="nav-item"><a class="nav-link" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
-                        <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
                     </ul>
                 </div>

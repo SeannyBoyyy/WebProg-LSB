@@ -100,7 +100,7 @@ function isShowActive($page, $activePage) {
             <!-- Sidebar -->
             <div class="col-lg-3 col-md-4 col-sm-12 p-4 bg-dark" id="sidebar">
                 <div class="text-center mb-3">
-                    <img src="../img/Lsb_logo.jpg" alt="Admin Icon" class="img-fluid img-thumbnail rounded-circle" style="height: 150px; width:150px;">
+                    <img src="../img/Lsb_logo.jpg" alt="Admin Icon" class="img-fluid img-thumbnail rounded-circle" style="height: 175px; width:175px;">
                     <h1 class="text-white pt-2" style="font-family: 'Oswald', sans-serif; text-transform: uppercase;">___Admin Panel___</h1>
                 </div>
 

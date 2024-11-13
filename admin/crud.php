@@ -283,7 +283,74 @@ if (isset($_POST['spotlight_read'])) {
           </body>
           </html>";
 }
+// Read operation for program details
+if (isset($_POST['program_read'])) {
+    $program_id = $_POST['id'];
+    $result = mysqli_query($conn, "SELECT * FROM programs WHERE program_id = $program_id");
+    $record = mysqli_fetch_assoc($result);
 
+    echo "<!DOCTYPE html>
+          <html lang='en'>
+          <head>
+              <meta charset='UTF-8'>
+              <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+              <title>Read Program</title>
+              <style>
+                  body {
+                      font-family: Arial, sans-serif;
+                      background-color: #f4f4f4;
+                      margin: 0;
+                      padding: 0;
+                  }
+
+                  .container {
+                      max-width: 800px;
+                      margin: 20px auto;
+                      padding: 20px;
+                      background-color: #fff;
+                      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                  }
+
+                  h3 {
+                      color: #333;
+                  }
+
+                  img {
+                      max-width: 100%;
+                      height: auto;
+                      margin-top: 10px;
+                  }
+
+                  .category {
+                      font-style: italic;
+                      color: #555;
+                  }
+
+                  a {
+                      display: block;
+                      margin-top: 10px;
+                      color: black;
+                      text-decoration: none;
+                  }
+
+                  a:hover {
+                      text-decoration: underline;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class='container'>
+                  <h3>Program Details</h3>
+                  <p><strong>Title:</strong> {$record['title']}</p>
+                  <p><strong>Description:</strong> {$record['description']}</p>
+                  <p><strong>Category:</strong> <span class='category'>{$record['category']}</span></p>
+                  <img src='./img/{$record['image_url']}' alt='Program Image'>
+                  <p><strong>Created At:</strong> {$record['created_at']}</p>
+                  <a class='btn btn-success' href='index.php?active=programs'>Back to Programs List</a>
+              </div>
+          </body>
+          </html>";
+}
 
 // Merch Edit operation
 if (isset($_POST['merch_edit'])) {
@@ -313,6 +380,12 @@ if (isset($_POST['spotlight_edit'])) {
     exit();
 }
 
+// Program Edit operation
+if (isset($_POST['program_edit'])) {
+    $program_id = $_POST['id'];
+    header("Location: program_edit.php?program_id=$program_id");
+    exit();
+}
 
 // -------------------- DELETE SECTION ------------------------
 
@@ -347,6 +420,20 @@ if (isset($_POST['spotlight_delete'])) {
     header("Location: index.php?active=spotlight");
     exit();
 }
+
+if (isset($_POST['delete_program'])) {
+    $program_id = $_POST['id']; // Use 'id' to get the program ID from the form
+    $query = "DELETE FROM programs WHERE program_id = $program_id";
+    
+    if (mysqli_query($conn, $query)) {
+        header("Location: index.php?active=programs");
+        exit();
+    } else {
+        echo "Error deleting record: " . mysqli_error($conn);
+    }
+}
+
+// -------------------- OTHERS SECTION ------------------------
 
 // Handle the publish news request
 if (isset($_POST['publish_news'])) {

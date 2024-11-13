@@ -341,9 +341,9 @@ if (isset($_POST['send_message'])) {
                                 Programs
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                                <li><a class="dropdown-item" href="#overview">Overview</a></li>
-                                <li><a class="dropdown-item" href="#senior_high">Senior High</a></li>
-                                <li><a class="dropdown-item" href="#college">College</a></li>
+                                <li><a class="dropdown-item" href="overview.php">Overview</a></li>
+                                <li><a class="dropdown-item" href="senior_high.php">Senior High</a></li>
+                                <li><a class="dropdown-item" href="college.php">College</a></li>
                             </ul>
                         </li>
                         <!-- Other Navbar Items -->
@@ -375,26 +375,86 @@ if (isset($_POST['send_message'])) {
         </div>
     </section>
 
-    <!-- Featured Article Section -->
-    <section class="container my-5 p-5">
-        <?php if ($featuredNews): ?>
-            <div class="row">
-                <div class="col-md-5">
-                    <img src="./admin/img/<?= htmlspecialchars($featuredNews['image_url']); ?>" alt="<?= htmlspecialchars($featuredNews['title']); ?>" class="featured-article" style="width: 100%; border-radius: 10px;">
-                </div>
-                <div class="col-md-7">
-                    <p class="text-muted">
-                        <span><?= htmlspecialchars($featuredNews['author']); ?></span> • 
-                        <?= date('F j, Y', strtotime($featuredNews['published_date'])); ?>
-                    </p>
-                    <h3><?= htmlspecialchars($featuredNews['title']); ?></h3>
-                    <p><?= htmlspecialchars($featuredNews['content']) . '...'; ?></p>
-                    <p class="text-danger">News <span class="text-muted"> • <?= htmlspecialchars($featuredNews['category']); ?></span> </p>
+
+    <!-- Spotlight --> 
+    <!-- Testimonial Video Carousel Section -->
+    <section class="pb-5" id="spotlight">
+        <div class="container">
+            <h2 class="text-center section-title">Student Spotlight</h2>
+            <div class="section-title-hr"><!-- Underline --></div>
+            <p class="text-center" style="max-width: 700px; margin: 0 auto; color: #555;">
+                Discover the journeys and achievements of our standout students. These videos showcase the passion, dedication, and success stories of our students, providing a glimpse into their inspiring academic and personal accomplishments.
+            </p>
+            <div class="position-relative mt-4">
+                <div id="testimonialCarousel" class="carousel slide" data-bs-ride="false">
+                    <div class="carousel-inner">
+                        
+                        <?php
+                        // Fetch spotlight records from the database
+                        $resultSpotlight = mysqli_query($conn, "SELECT title, description, video_url FROM spotlight ORDER BY spotlight_id DESC");
+                        $isActive = true; // Flag to set the first carousel item as active
+                        
+                        while ($row = mysqli_fetch_assoc($resultSpotlight)) {
+                            $activeClass = $isActive ? 'active' : ''; // Add 'active' class only for the first item
+                            $isActive = false; // Set flag to false after first item
+                        ?>
+                        
+                        <!-- Spotlight Video Item -->
+                        <div class="carousel-item <?php echo $activeClass; ?>">
+                            <div class="d-flex justify-content-center">
+                                <video class="w-75" controls>
+                                    <source src="./admin/vid/<?php echo htmlspecialchars($row['video_url']); ?>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </div>
+                            <div class="text-center mt-3">
+                                <h5><?php echo htmlspecialchars($row['title']); ?></h5>
+                                <p style="color: #555; max-width: 600px; margin: 0 auto;">
+                                    <?php echo htmlspecialchars($row['description']); ?>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <?php } ?>
+                        
+                    </div>
+                    
+                    <!-- Carousel Controls -->
+                    <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="transform: translateX(-50%);">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="transform: translateX(50%);">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
-        <?php else: ?>
-            <p>No featured news available at the moment.</p>
-        <?php endif; ?>
+        </div>
+    </section>
+
+    <!-- Featured Article Section -->
+    <section class="py-5" style="background: #e9ecef;">
+        <div class="container my-5">
+            <?php if ($featuredNews): ?>
+                <div class="row">
+                    <div class="col-md-5">
+                        <img src="./admin/img/<?= htmlspecialchars($featuredNews['image_url']); ?>" alt="<?= htmlspecialchars($featuredNews['title']); ?>" class="featured-article" style="width: 100%; border-radius: 10px;">
+                    </div>
+                    <div class="col-md-7">
+                        <p class="text-muted">
+                            <span><?= htmlspecialchars($featuredNews['author']); ?></span> • 
+                            <?= date('F j, Y', strtotime($featuredNews['published_date'])); ?>
+                        </p>
+                        <h3><?= htmlspecialchars($featuredNews['title']); ?></h3>
+                        <p><?= htmlspecialchars($featuredNews['content']) . '...'; ?></p>
+                        <p class="text-danger">News <span class="text-muted"> • <?= htmlspecialchars($featuredNews['category']); ?></span> </p>
+                    </div>
+                </div>
+            <?php else: ?>
+                <p>No featured news available at the moment.</p>
+            <?php endif; ?>
+        </div>
     </section>
 
     <!-- Latest News Section -->
@@ -460,63 +520,6 @@ if (isset($_POST['send_message'])) {
                     echo "<p class='text-center'>No news available.</p>";
                 }
                 ?>
-            </div>
-        </div>
-    </section>
-
-    <!-- Spotlight --> 
-    <!-- Testimonial Video Carousel Section -->
-    <section class="py-5" id="spotlight" style="background: #e9ecef;">
-        <div class="container">
-            <h2 class="text-center section-title">Student Spotlight</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
-            <p class="text-center" style="max-width: 700px; margin: 0 auto; color: #555;">
-                Discover the journeys and achievements of our standout students. These videos showcase the passion, dedication, and success stories of our students, providing a glimpse into their inspiring academic and personal accomplishments.
-            </p>
-            <div class="position-relative mt-4">
-                <div id="testimonialCarousel" class="carousel slide" data-bs-ride="false">
-                    <div class="carousel-inner">
-                        
-                        <?php
-                        // Fetch spotlight records from the database
-                        $resultSpotlight = mysqli_query($conn, "SELECT title, description, video_url FROM spotlight ORDER BY spotlight_id DESC");
-                        $isActive = true; // Flag to set the first carousel item as active
-                        
-                        while ($row = mysqli_fetch_assoc($resultSpotlight)) {
-                            $activeClass = $isActive ? 'active' : ''; // Add 'active' class only for the first item
-                            $isActive = false; // Set flag to false after first item
-                        ?>
-                        
-                        <!-- Spotlight Video Item -->
-                        <div class="carousel-item <?php echo $activeClass; ?>">
-                            <div class="d-flex justify-content-center">
-                                <video class="w-75" controls>
-                                    <source src="./admin/vid/<?php echo htmlspecialchars($row['video_url']); ?>" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            </div>
-                            <div class="text-center mt-3">
-                                <h5><?php echo htmlspecialchars($row['title']); ?></h5>
-                                <p style="color: #555; max-width: 600px; margin: 0 auto;">
-                                    <?php echo htmlspecialchars($row['description']); ?>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <?php } ?>
-                        
-                    </div>
-                    
-                    <!-- Carousel Controls -->
-                    <button class="carousel-control-prev position-absolute start-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev" style="transform: translateX(-50%);">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next position-absolute end-0 top-50 translate-middle-y bg-black" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next" style="transform: translateX(50%);">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
             </div>
         </div>
     </section>

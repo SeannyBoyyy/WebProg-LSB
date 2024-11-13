@@ -19,7 +19,7 @@ if (isset($_POST['upload_spotlight'])) {
             $imageUploadPath = 'img/' . $newImageName;
             move_uploaded_file($imageTmpName, $imageUploadPath);
         } else {
-            echo "<script>Swal.fire('Error!', 'Invalid image format!', 'error');</script>";
+            echo "<script>Swal.fire('Error!', 'Invalid image format!', 'error').then(function() {window.location = 'index.php?active=spotlight';});</script>";
             exit();
         }
     }
@@ -35,7 +35,7 @@ if (isset($_POST['upload_spotlight'])) {
             $videoUploadPath = 'vid/' . $newVideoName;
             move_uploaded_file($videoTmpName, $videoUploadPath);
         } else {
-            echo "<script>Swal.fire('Error!', 'Only .mp4 videos allowed!', 'error');</script>";
+            echo "<script>Swal.fire('Error!', 'Only .mp4 videos allowed!', 'error').then(function() {window.location = 'index.php?active=spotlight';});</script>";
             exit();
         }
     }
@@ -43,9 +43,9 @@ if (isset($_POST['upload_spotlight'])) {
     $query = "INSERT INTO spotlight (title, description, featured_image_url, video_url, created_at) 
               VALUES ('$title', '$description', '$newImageName', '$newVideoName', NOW())";
     if (mysqli_query($conn, $query)) {
-        echo "<script>Swal.fire('Success!', 'Spotlight added successfully!', 'success');</script>";
+        echo "<script>Swal.fire('Success!', 'Spotlight added successfully!', 'success').then(function() {window.location = 'index.php?active=spotlight';});</script>";
     } else {
-        echo "<script>Swal.fire('Error!', 'Failed to add spotlight.', 'error');</script>";
+        echo "<script>Swal.fire('Error!', 'Failed to add spotlight.', 'error').then(function() {window.location = 'index.php?active=spotlight';});</script>";
     }
 }
 

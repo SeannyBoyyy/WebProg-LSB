@@ -1,5 +1,5 @@
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4" style="background: #301934;">
+    <footer class="text-white py-4" style="background: #301934;">
         <div class="container text-center">
             <p>&copy; 2024 Lyceum of Subic Bay. All Rights Reserved.</p>
             <div>

@@ -237,19 +237,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #f39c12;
         }
 
-        /* Footer */
-        footer {
-            background: #333;
+        /* Show dropdown on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
         }
 
-        footer p,
-        footer a {
-            color: #bbb;
-        }
-
-        footer a:hover {
-            color: #fff;
-            text-decoration: none;
+        /* Add a smooth transition for dropdown appearance */
+        .dropdown-menu {
+            transition: all 0.3s ease;
         }
 
         /* Responsive Adjustments */
@@ -270,13 +265,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <header id="navbar" class="header py-3">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="#">Lyceum of Subic Bay</a>
+                <a class="navbar-brand" href="index.php">Lyceum of Subic Bay</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
+                        <!-- Programs Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" aria-expanded="false">
+                                Programs
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                                <li><a class="dropdown-item" href="#overview">Overview</a></li>
+                                <li><a class="dropdown-item" href="#senior_high">Senior High</a></li>
+                                <li><a class="dropdown-item" href="#college">College</a></li>
+                            </ul>
+                        </li>
+                        <!-- Other Navbar Items -->
                         <li class="nav-item"><a class="nav-link" href="#spotlight">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="#merchandise">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
@@ -483,7 +489,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 Stay informed about upcoming tournaments, program developments, and community initiatives that celebrate our esports journey. Whether you’re a current 
                                 student, an alumnus, or an esports enthusiast, our stories aim to inspire, engage, and connect you with the vibrant world of esports at LSB. Join us as 
                                 we showcase the dedication and passion of our players and the milestones that make our community truly exceptional!</p>
-                            <a href="news.php" class="btn btn-primary">Read More</a>
                         </div>
                     </div>
                 </div>
@@ -685,12 +690,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <p class="card-text">
                                         <?php 
                                             $description = htmlspecialchars($event['description']);
-                                            $truncatedDescription = (strlen($description) > 60) ? substr($description, 0, 60) . '...' : $description;
+                                            $truncatedDescription = (strlen($description) > 70) ? substr($description, 0, 70) . '...' : $description;
                                         ?>
                                         <span class="short-text"><?php echo $truncatedDescription; ?></span>
                                         <span class="full-text d-none"><?php echo $description; ?></span>
                                         <?php if (strlen($description) > 60) : ?>
-                                            <a class="see-more text-secondary text-decoration-none">See More</a>
+                                            <a class="see-more text-secondary text-decoration-none"></a>
                                         <?php endif; ?>
                                     </p>
                                     <p class="card-text"><small class="text-muted">Date: <?php echo htmlspecialchars($event['event_date']); ?></small></p>

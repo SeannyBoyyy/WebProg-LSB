@@ -17,6 +17,13 @@ $featured_event = mysqli_fetch_assoc($featured_result);
 $sqlNews = "SELECT * FROM news WHERE category = 'General' ORDER BY news_id DESC LIMIT 4";
 $resultNews = $conn->query($sqlNews);
 
+// Query to retrieve College programs
+$sqlCollege = "SELECT program_id, title, description, image_url, created_at, category FROM programs WHERE category = 'College' ORDER BY program_id DESC LIMIT 3";
+$resultCollege = $conn->query($sqlCollege);
+
+// Query to retrieve Senior High programs
+$sqlSeniorHigh = "SELECT program_id, title, description, image_url, created_at, category FROM programs WHERE category = 'Senior High' ORDER BY program_id DESC LIMIT 3";
+$resultSeniorHigh = $conn->query($sqlSeniorHigh);
 // Contact Us
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data
@@ -356,40 +363,125 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Programs Section -->
     <section class="py-5" id="programs" style="background: #f3f4f6;">
         <div class="container">
-            <h2 class="text-center section-title">Our Programs</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
-            <div class="row align-items-center mb-4">
-                <div class="col-md-6">
-                    <img src="img/lsbvarsity_top8.jpg" class="img-fluid" alt="Esports Training Camp">
-                </div>
-                <div class="col-md-6">
-                    <h5>Esports Training Camp</h5>
-                    <p>Develop your skills with our specialized training programs.</p>
-                    <a href="#" class="btn btn-primary">Inquire Now</a>
-                </div>
+            <!-- Introduction -->
+            <h2 class="section-title d-flex align-items-center justify-content-between" style="font-size: 2.5rem; font-weight: bold;">
+                School Related Programs
+                <a href="overview.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+            </h2>
+            <p class="mb-5" style="font-size: 1.2rem;">
+                Discover a variety of academic and extracurricular programs at LSB that empower students to excel both in the classroom and beyond. From cutting-edge courses to engaging student activities, there's something for everyone!
+            </p>
+
+            <!-- College Programs -->
+            <h3 class="text-center section-title mt-5 mb-4">College Programs</h3>
+            <div class="section-title-hr"></div>
+
+            <div class="row">
+                <?php
+                if ($resultCollege->num_rows > 0) {
+                    while ($row = $resultCollege->fetch_assoc()) {
+                        ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="./admin/img/<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                                <div class="card-body">
+                                    <span class="badge bg-primary">College</span>
+                                    <h5 class="card-title mt-2"><?php echo htmlspecialchars($row['title']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars(substr($row['description'], 0, 135)) . '...'; ?>
+                                    <button type="button" class="btn btn-link p-0 text-primary" data-bs-toggle="modal" data-bs-target="#programModal<?php echo $row['program_id']; ?>">
+                                        Read More
+                                    </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for program details -->
+                        <div class="modal fade" id="programModal<?php echo $row['program_id']; ?>" tabindex="-1" aria-labelledby="programModalLabel<?php echo $row['program_id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="programModalLabel<?php echo $row['program_id']; ?>"><?php echo htmlspecialchars($row['title']); ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="./admin/img/<?php echo $row['image_url']; ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                                        <span class="badge bg-primary">College</span>
+                                        <p class="mt-3"><?php echo htmlspecialchars($row['description']); ?></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo "<p class='text-center'>No college programs available.</p>";
+                }
+                ?>
             </div>
-            <div class="row align-items-center mb-4">
-                <div class="col-md-6 order-md-2">
-                    <img src="img/lsbvarsity_top8.jpg" class="img-fluid" alt="Tournaments">
-                </div>
-                <div class="col-md-6">
-                    <h5>Tournaments</h5>
-                    <p>Join our competitive tournaments and showcase your talent.</p>
-                    <a href="#" class="btn btn-primary">Inquire Now</a>
-                </div>
+
+            <!-- Senior High Programs -->
+            <h3 class="text-center section-title mt-5 mb-4">Senior High Programs</h3>
+            <div class="section-title-hr"></div>
+
+            <div class="row">
+                <?php
+                if ($resultSeniorHigh->num_rows > 0) {
+                    while ($row = $resultSeniorHigh->fetch_assoc()) {
+                        ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <img src="./admin/img/<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                                <div class="card-body">
+                                    <span class="badge bg-secondary">Senior High</span>
+                                    <h5 class="card-title mt-2"><?php echo htmlspecialchars($row['title']); ?></h5>
+                                    <p class="card-text"><?php echo htmlspecialchars(substr($row['description'], 0, 135)) . '...'; ?>
+                                    <button type="button" class="btn btn-link p-0 text-primary" data-bs-toggle="modal" data-bs-target="#programModal<?php echo $row['program_id']; ?>">
+                                        Read More
+                                    </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for program details -->
+                        <div class="modal fade" id="programModal<?php echo $row['program_id']; ?>" tabindex="-1" aria-labelledby="programModalLabel<?php echo $row['program_id']; ?>" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="programModalLabel<?php echo $row['program_id']; ?>"><?php echo htmlspecialchars($row['title']); ?></h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="./admin/img/<?php echo $row['image_url']; ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($row['title']); ?>">
+                                        <span class="badge bg-secondary">Senior High</span>
+                                        <p class="mt-3"><?php echo htmlspecialchars($row['description']); ?></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo "<p class='text-center'>No senior high programs available.</p>";
+                }
+                ?>
             </div>
-            <div class="row align-items-center mb-4">
-                <div class="col-md-6">
-                    <img src="img/lsbvarsity_top8.jpg" class="img-fluid" alt="Community Engagement">
-                </div>
-                <div class="col-md-6">
-                    <h5>Community Engagement</h5>
-                    <p>Be a part of our community events and workshops.</p>
-                    <a href="#" class="btn btn-primary">Inquire Now</a>
-                </div>
+            <!-- View All Programs Button -->
+            <p class="text-center mt-3">To View All The Programs - Read All The Programs </p>
+            <div class="text-center">
+                <a href="overview.php" class="btn btn-secondary">View All Programs</a>
             </div>
         </div>
     </section>
+
+
 
     <!-- Spotlight --> 
     <!-- Testimonial Video Carousel Section -->
@@ -556,7 +648,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <p class="text-center mt-3">To View All The News, Stories and Spotlight - Read All The News, Stories, Spotlight and Participate</p>
             <div class="text-center">
-                <a href="events.php" class="btn btn-primary">View All Events</a>
+                <a href="events.php" class="btn btn-secondary">View All Events</a>
             </div>
         </div>
     </section>
@@ -639,7 +731,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 ?>
             <p class="text-center mt-3">Promotional Purposes Only - No Online Transactions</p>
             <div class="text-center">
-                <a href="merch.php" class="btn btn-primary">View All Merchandise</a>
+                <a href="merch.php" class="btn btn-secondary">View All Merchandise</a>
             </div>
         </div>
     </section>

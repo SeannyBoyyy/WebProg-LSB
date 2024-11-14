@@ -347,7 +347,7 @@ if (isset($_POST['send_message'])) {
                             </ul>
                         </li>
                         <!-- Other Navbar Items -->
-                        <li class="nav-item"><a class="nav-link" href="news.php">News & Spotlight</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>

@@ -266,7 +266,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <ul class="navbar-nav ms-auto">
                         <!-- Programs Dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle active" href="#" id="programsDropdown" role="button" aria-expanded="false">
                                 Programs
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="programsDropdown">

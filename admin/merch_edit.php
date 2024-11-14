@@ -1,7 +1,7 @@
 <?php
 include('../config/config.php');
 
-// Merch post
+// Merch edit
 if (isset($_GET['merch_id'])) {
     $merch_id = $_GET['merch_id'];
 
@@ -22,47 +22,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $newDescription = mysqli_real_escape_string($conn, $_POST['new_description']);
     $newPrice = mysqli_real_escape_string($conn, $_POST['new_price']);
     $newStockQuantity = mysqli_real_escape_string($conn, $_POST['new_stock_quantity']);
+    $newCategory = mysqli_real_escape_string($conn, $_POST['new_category']);
 
-    // Check if the merchandise id is set
+    // Check if the merch id is set
     if (isset($_GET['merch_id'])) {
         $merch_id = $_GET['merch_id'];
 
-        // Update the merch record in the database
+        // Update the merch fields in the database
         mysqli_query($conn, "UPDATE merch SET 
             name = '$newName', 
-            description = '$newDescription', 
-            price = '$newPrice', 
-            stock_quantity = '$newStockQuantity' 
+            description = '$newDescription',
+            price = '$newPrice',
+            stock_quantity = '$newStockQuantity',
+            category = '$newCategory'
             WHERE merch_id = $merch_id");
 
         // Process image upload if a new image is provided
         if ($_FILES['new_image']['error'] !== 4) {
-            $fileName = $_FILES['new_image']['name'];
-            $fileSize = $_FILES['new_image']['size'];
+            $imageName = $_FILES['new_image']['name'];
             $tmpName = $_FILES['new_image']['tmp_name'];
 
-            $validImageExtension = ['jpg', 'jpeg', 'png'];
-            $imageExtension = explode('.', $fileName);
-            $imageExtension = strtolower(end($imageExtension));
+            $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-            if (in_array($imageExtension, $validImageExtension) && $fileSize <= 1000000) {
+            if (in_array($imageExtension, $allowedExtensions) && $_FILES['new_image']['size'] <= 2000000) {
                 $newImageName = uniqid() . '.' . $imageExtension;
                 move_uploaded_file($tmpName, 'img/' . $newImageName);
 
                 // Update the image URL in the database
                 mysqli_query($conn, "UPDATE merch SET image_url = '$newImageName' WHERE merch_id = $merch_id");
-            } else {
-                echo "
-                <script>
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Invalid Image. Please upload a valid image file (jpg, jpeg, or png) with size up to 1MB.',
-                        icon: 'error'
-                    }).then(function() {
-                        window.location = 'index.php?active=merch';
-                    });
-                </script>";
-                exit();
             }
         }
     }
@@ -80,43 +68,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Merchandise</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: Arial, sans-serif;
+        }
+        .main-container {
+            max-width: 600px;
+            margin: 90px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .main-container h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .btn-submit {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <div class="middle mt-5">
-        <div class="container-fluid w-50" style="margin-top: 90px;">
-            <div class="col-md-6 container-fluid text-center">
-                <div class="container-fluid">
-                    <h2>Edit Merchandise</h2>
-                </div>
+    <div class="main-container">
+        <h2 class="text-center">Edit Merchandise</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="merchName" class="form-label">Name:</label>
+                <input type="text" class="form-control" id="merchName" name="new_name" value="<?php echo htmlspecialchars($record['name']); ?>" required>
             </div>
-        </div>
-        <div class="container-sm d-flex align-items-center mt-5 border rounded-5 p-3 bg-white shadow box-area p-5">
-            <!-- Edit Form -->
-            <form action="" method="post" enctype="multipart/form-data" class="w-100 g-3">
-                <div class="mb-3">
-                    <label for="merchName" class="form-label">Merchandise Name:</label>
-                    <input type="text" class="form-control" id="merchName" name="new_name" value="<?php echo $record['name']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="merchDescription" class="form-label">Description:</label>
-                    <textarea class="form-control" id="merchDescription" name="new_description" rows="3" required><?php echo $record['description']; ?></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="merchPrice" class="form-label">Price:</label>
-                    <input type="number" class="form-control" id="merchPrice" name="new_price" value="<?php echo $record['price']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="merchStock" class="form-label">Stock Quantity:</label>
-                    <input type="number" class="form-control" id="merchStock" name="new_stock_quantity" value="<?php echo $record['stock_quantity']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">New Image:</label>
-                    <input class="form-control" type="file" id="formFile" name="new_image" accept=".jpg, .jpeg, .png">
-                </div>
-                <button type="submit" class="btn w-100 btn-md btn-success">Save Changes</button>
-            </form>
-        </div>
+            <div class="mb-4">
+                <label for="merchDescription" class="form-label">Description:</label>
+                <textarea class="form-control" id="merchDescription" name="new_description" rows="5" required><?php echo htmlspecialchars($record['description']); ?></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="merchPrice" class="form-label">Price:</label>
+                <input type="number" step="0.01" class="form-control" id="merchPrice" name="new_price" value="<?php echo htmlspecialchars($record['price']); ?>" required>
+            </div>
+            <div class="mb-4">
+                <label for="merchStock" class="form-label">Stock Quantity:</label>
+                <input type="number" class="form-control" id="merchStock" name="new_stock_quantity" value="<?php echo htmlspecialchars($record['stock_quantity']); ?>" required>
+            </div>
+            <div class="mb-4">
+                <label for="merchCategory" class="form-label">Category:</label>
+                <select class="form-control" id="eventCategory" name="new_category" required>
+                    <option value="featured" <?php if ($record['category'] == 'featured') echo 'selected'; ?>>Featured</option>
+                    <option value="regular" <?php if ($record['category'] == 'regular') echo 'selected'; ?>>Regular</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="formImage" class="form-label">New Image (JPG, JPEG, PNG):</label>
+                <input class="form-control" type="file" id="formImage" name="new_image" accept=".jpg, .jpeg, .png">
+            </div>
+            <button type="submit" class="btn btn-submit w-100">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

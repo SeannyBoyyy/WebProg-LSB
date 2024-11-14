@@ -78,15 +78,25 @@ function isShowActive($page, $activePage) {
     <header id="navbar" class="header py-3" style="background-color: #301934;">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="../index.php">Lyceum of Subic Bay</a>
+                <a class="navbar-brand" href="index.php">Lyceum of Subic Bay</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../news.php">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="../news.php">News</a></li>
+                        <!-- Programs Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" aria-expanded="false">
+                                Programs
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                                <li><a class="dropdown-item" href="overview.php">Overview</a></li>
+                                <li><a class="dropdown-item" href="senior_high.php">Senior High</a></li>
+                                <li><a class="dropdown-item" href="college.php">College</a></li>
+                            </ul>
+                        </li>
+                        <!-- Other Navbar Items -->
+                        <li class="nav-item"><a class="nav-link" href="../news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="../merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="../events.php">Events</a></li>
                     </ul>
@@ -94,6 +104,7 @@ function isShowActive($page, $activePage) {
             </nav>
         </div>
     </header>
+
 
     <div class="container-fluid">
         <div class="row">

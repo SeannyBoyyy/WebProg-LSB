@@ -1,7 +1,7 @@
 <?php
 include('../config/config.php');
 
-// Program editing
+// Program edit
 if (isset($_GET['program_id'])) {
     $program_id = $_GET['program_id'];
 
@@ -15,51 +15,38 @@ if (isset($_GET['program_id'])) {
     }
 }
 
-// Process form submission for editing
+// Process the form submission for editing
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validate and process the submitted data
     $newTitle = mysqli_real_escape_string($conn, $_POST['new_title']);
     $newDescription = mysqli_real_escape_string($conn, $_POST['new_description']);
     $newCategory = mysqli_real_escape_string($conn, $_POST['new_category']);
 
-    // Check if the program ID is set
+    // Check if the program id is set
     if (isset($_GET['program_id'])) {
         $program_id = $_GET['program_id'];
 
-        // Update the program record in the database
+        // Update the title, description, and category in the program record
         mysqli_query($conn, "UPDATE programs SET 
             title = '$newTitle', 
-            description = '$newDescription', 
-            category = '$newCategory' 
+            description = '$newDescription',
+            category = '$newCategory'
             WHERE program_id = $program_id");
 
         // Process image upload if a new image is provided
         if ($_FILES['new_image']['error'] !== 4) {
-            $fileName = $_FILES['new_image']['name'];
-            $fileSize = $_FILES['new_image']['size'];
+            $imageName = $_FILES['new_image']['name'];
             $tmpName = $_FILES['new_image']['tmp_name'];
 
-            $validImageExtension = ['jpg', 'jpeg', 'png'];
-            $imageExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $imageExtension = strtolower(pathinfo($imageName, PATHINFO_EXTENSION));
+            $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
-            if (in_array($imageExtension, $validImageExtension) && $fileSize <= 1000000) {
+            if (in_array($imageExtension, $allowedExtensions) && $_FILES['new_image']['size'] <= 2000000) {
                 $newImageName = uniqid() . '.' . $imageExtension;
                 move_uploaded_file($tmpName, 'img/' . $newImageName);
 
                 // Update the image URL in the database
                 mysqli_query($conn, "UPDATE programs SET image_url = '$newImageName' WHERE program_id = $program_id");
-            } else {
-                echo "
-                <script>
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'Invalid Image. Please upload a valid image file (jpg, jpeg, or png) with size up to 1MB.',
-                        icon: 'error'
-                    }).then(function() {
-                        window.location = 'index.php?active=programs';
-                    });
-                </script>";
-                exit();
             }
         }
     }
@@ -77,42 +64,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Program</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: Arial, sans-serif;
+        }
+        .main-container {
+            max-width: 600px;
+            margin: 90px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .main-container h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .btn-submit {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <div class="middle mt-5">
-        <div class="container-fluid w-50" style="margin-top: 90px;">
-            <div class="col-md-6 container-fluid text-center">
-                <div class="container-fluid">
-                    <h2>Edit Program</h2>
-                </div>
+    <div class="main-container">
+        <h2 class="text-center">Edit Program</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="programTitle" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="programTitle" name="new_title" value="<?php echo htmlspecialchars($record['title']); ?>" required>
             </div>
-        </div>
-        <div class="container-sm d-flex align-items-center mt-5 border rounded-5 p-3 bg-white shadow box-area p-5">
-            <!-- Edit Form -->
-            <form action="" method="post" enctype="multipart/form-data" class="w-100 g-3">
-                <div class="mb-3">
-                    <label for="programTitle" class="form-label">Program Title:</label>
-                    <input type="text" class="form-control" id="programTitle" name="new_title" value="<?php echo $record['title']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="programDescription" class="form-label">Description:</label>
-                    <textarea class="form-control" id="programDescription" name="new_description" rows="5" required><?php echo $record['description']; ?></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="programCategory" class="form-label">Category:</label>
-                    <select class="form-select" id="programCategory" name="new_category" required>
-                        <option value="Senior High" <?php if ($record['category'] == 'Senior High') echo 'selected'; ?>>Senior High</option>
-                        <option value="College" <?php if ($record['category'] == 'College') echo 'selected'; ?>>College</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">New Image:</label>
-                    <input class="form-control" type="file" id="formFile" name="new_image" accept=".jpg, .jpeg, .png">
-                </div>
-                <button type="submit" class="btn w-100 btn-md btn-success">Save Changes</button>
-            </form>
-        </div>
+            <div class="mb-4">
+                <label for="programDescription" class="form-label">Description:</label>
+                <textarea class="form-control" id="programDescription" name="new_description" rows="5" required><?php echo htmlspecialchars($record['description']); ?></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="programCategory" class="form-label">Category:</label>
+                <select class="form-control" id="programCategory" name="new_category" required>
+                    <option value="Senior High" <?php if ($record['category'] == 'Senior High') echo 'selected'; ?>>Senior High</option>
+                    <option value="College" <?php if ($record['category'] == 'College') echo 'selected'; ?>>College</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="formImage" class="form-label">New Image (JPG, JPEG, PNG):</label>
+                <input class="form-control" type="file" id="formImage" name="new_image" accept=".jpg, .jpeg, .png">
+            </div>
+            <button type="submit" class="btn btn-submit w-100">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

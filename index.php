@@ -280,7 +280,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <ul class="navbar-nav ms-auto">
                         <!-- Programs Dropdown -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#programs" id="programsDropdown" role="button" aria-expanded="false">
                                 Programs
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="programsDropdown">
@@ -290,7 +290,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </ul>
                         </li>
                         <!-- Other Navbar Items -->
-                        <li class="nav-item"><a class="nav-link" href="#spotlight">News & Spotlight</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#news">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="#merchandise">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="#events">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>
@@ -485,7 +485,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Spotlight --> 
     <!-- Testimonial Video Carousel Section -->
-    <section class="py-5" id="spotlight" style="background: #fff;">
+    <section class="py-5" id="news" style="background: #fff;">
         <div class="container">
             <div class="row">
                 <div class="col-md-5"></div> <!-- Empty column for spacing -->

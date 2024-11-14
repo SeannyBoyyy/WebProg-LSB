@@ -101,7 +101,7 @@
     }
 
     // Retrieve all merchandise records from the database
-    $query = "SELECT * FROM merch";
+    $query = "SELECT * FROM merch ORDER BY merch_id DESC";
     $result = mysqli_query($conn, $query);
     ?>
 
@@ -148,7 +148,7 @@
                 </form>
             </div>
         </div>
-
+        
         <!-- Merchandise List Table -->
         <div class="card shadow-sm">
             <div class="card-body">
@@ -169,9 +169,10 @@
                     </thead>
                     <tbody>
                         <?php if ($result && $result->num_rows > 0): ?>
+                            <?php $counter = 1; // Initialize the counter ?>
                             <?php while($row = $result->fetch_assoc()): ?>
                                 <tr>
-                                    <td><?= $row['merch_id']; ?></td>
+                                    <td><?= $counter++; ?></td>
                                     <td><?= $row['name']; ?></td>
                                     <td><?= $row['description']; ?></td>
                                     <td><?= number_format($row['price'], 2); ?></td>

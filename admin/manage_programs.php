@@ -51,7 +51,7 @@ if (isset($_POST['upload_program'])) {
 }
 
 // Retrieve programs by category
-$seniorHighQuery = "SELECT * FROM programs WHERE category = 'Senior High'";
+$seniorHighQuery = "SELECT * FROM programs WHERE category = 'Senior High' ORDER BY program_id DESC";
 $seniorHighResult = mysqli_query($conn, $seniorHighQuery);
 
 $collegeQuery = "SELECT * FROM programs WHERE category = 'College'";
@@ -67,7 +67,7 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
             <h5 class="card-title">Add New Program</h5>
             <form method="post" enctype="multipart/form-data">
                 <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
+                    <label for="title" class="form-label">Course Name</label>
                     <input type="text" name="title" id="title" class="form-control" required>
                 </div>
                 <div class="mb-3">
@@ -75,7 +75,7 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                     <textarea name="description" id="description" class="form-control" rows="4" required></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Upload Image</label>
+                    <label for="image" class="form-label">Logo Image</label>
                     <input type="file" name="image" id="image" class="form-control" accept=".jpg,.jpeg,.png" required>
                 </div>
                 <div class="mb-3">
@@ -107,9 +107,10 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                 </thead>
                 <tbody>
                     <?php if ($seniorHighResult && $seniorHighResult->num_rows > 0): ?>
+                        <?php $counter = 1; // Initialize the counter ?>
                         <?php while($row = $seniorHighResult->fetch_assoc()): ?>
                             <tr>
-                                <td><?= $row['program_id']; ?></td>
+                                <td><?= $counter++ ?></td>
                                 <td><?= $row['title']; ?></td>
                                 <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>
@@ -157,9 +158,10 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                 </thead>
                 <tbody>
                     <?php if ($collegeResult && $collegeResult->num_rows > 0): ?>
+                        <?php $counter1 = 1; // Initialize the counter ?>
                         <?php while($row = $collegeResult->fetch_assoc()): ?>
                             <tr>
-                                <td><?= $row['program_id']; ?></td>
+                                <td><?= $counter1++ ?></td>
                                 <td><?= $row['title']; ?></td>
                                 <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>

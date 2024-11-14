@@ -56,10 +56,10 @@ if (isset($_POST['upload_news'])) {
 }
 
 // Retrieve pending and published news articles separately
-$pendingQuery = "SELECT * FROM news WHERE category = 'Pending'";
+$pendingQuery = "SELECT * FROM news WHERE category = 'Pending' ORDER BY news_id DESC";
 $pendingResult = mysqli_query($conn, $pendingQuery);
 
-$newsQuery = "SELECT * FROM news WHERE category != 'Pending'";
+$newsQuery = "SELECT * FROM news WHERE category != 'Pending' ORDER BY news_id DESC";
 $newsResult = mysqli_query($conn, $newsQuery);
 
 ?>
@@ -119,8 +119,9 @@ $newsResult = mysqli_query($conn, $newsQuery);
                 <tbody>
                     <?php if ($pendingResult && $pendingResult->num_rows > 0): ?>
                         <?php while($row = $pendingResult->fetch_assoc()): ?>
+                            <?php $counter = 1; // Initialize the counter ?>
                             <tr>
-                                <td><?= $row['news_id']; ?></td>
+                                <td><?= $counter++; ?></td>
                                 <td><?= $row['title']; ?></td>
                                 <td><?= htmlspecialchars(substr($row['content'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"></td>
@@ -166,9 +167,10 @@ $newsResult = mysqli_query($conn, $newsQuery);
                 </thead>
                 <tbody>
                     <?php if ($newsResult && $newsResult->num_rows > 0): ?>
+                        <?php $counter1 = 1; // Initialize the counter ?>
                         <?php while($row = $newsResult->fetch_assoc()): ?>
                             <tr>
-                                <td><?= $row['news_id']; ?></td>
+                                <td><?= $counter1++; ?></td>
                                 <td><?= $row['title']; ?></td>
                                 <td><?= htmlspecialchars(substr($row['content'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"></td>

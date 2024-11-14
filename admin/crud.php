@@ -270,7 +270,6 @@ if (isset($_POST['spotlight_read'])) {
                   <h3>Spotlight Details</h3>
                   <p><strong>Title:</strong> {$record['title']}</p>
                   <p><strong>Description:</strong> {$record['description']}</p>
-                  <img src='./img/{$record['featured_image_url']}' alt='Spotlight Image'>
                   <p><strong>Video:</strong></p>
                   <div class='video-container'>
                       <video controls>

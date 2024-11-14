@@ -25,28 +25,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['spotlight_id'])) {
         $spotlight_id = $_GET['spotlight_id'];
 
-        // Update the spotlight record in the database
+        // Update the title and description in the spotlight record
         mysqli_query($conn, "UPDATE spotlight SET 
             title = '$newTitle', 
             description = '$newDescription'
             WHERE spotlight_id = $spotlight_id");
-
-        // Process image upload if a new image is provided
-        if ($_FILES['new_image']['error'] !== 4) {
-            $fileName = $_FILES['new_image']['name'];
-            $tmpName = $_FILES['new_image']['tmp_name'];
-
-            $validImageExtension = ['jpg', 'jpeg', 'png'];
-            $imageExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-
-            if (in_array($imageExtension, $validImageExtension) && $_FILES['new_image']['size'] <= 1000000) {
-                $newImageName = uniqid() . '.' . $imageExtension;
-                move_uploaded_file($tmpName, 'img/' . $newImageName);
-
-                // Update the image URL in the database
-                mysqli_query($conn, "UPDATE spotlight SET featured_image_url = '$newImageName' WHERE spotlight_id = $spotlight_id");
-            }
-        }
 
         // Process video upload if a new video is provided
         if ($_FILES['new_video']['error'] !== 4) {
@@ -78,38 +61,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Spotlight</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f7f9fc;
+            font-family: Arial, sans-serif;
+        }
+        .main-container {
+            max-width: 600px;
+            margin: 90px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .main-container h2 {
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #555;
+        }
+        .btn-submit {
+            background-color: #28a745;
+            color: #fff;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .btn-submit:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <div class="middle mt-5">
-        <div class="container-fluid w-50" style="margin-top: 90px;">
-            <div class="col-md-6 container-fluid text-center">
-                <div class="container-fluid">
-                    <h2>Edit Spotlight</h2>
-                </div>
+    <div class="main-container">
+        <h2 class="text-center">Edit Spotlight</h2>
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="mb-4">
+                <label for="spotlightTitle" class="form-label">Title:</label>
+                <input type="text" class="form-control" id="spotlightTitle" name="new_title" value="<?php echo htmlspecialchars($record['title']); ?>" required>
             </div>
-        </div>
-        <div class="container-sm d-flex align-items-center mt-5 border rounded-5 p-3 bg-white shadow box-area p-5">
-            <!-- Edit Form -->
-            <form action="" method="post" enctype="multipart/form-data" class="w-100 g-3">
-                <div class="mb-3">
-                    <label for="spotlightTitle" class="form-label">Title:</label>
-                    <input type="text" class="form-control" id="spotlightTitle" name="new_title" value="<?php echo $record['title']; ?>" required>
-                </div>
-                <div class="mb-3">
-                    <label for="spotlightDescription" class="form-label">Description:</label>
-                    <textarea class="form-control" id="spotlightDescription" name="new_description" rows="5" required><?php echo $record['description']; ?></textarea>
-                </div>
-                <div class="mb-3">
-                    <label for="formFile" class="form-label">New Image:</label>
-                    <input class="form-control" type="file" id="formFile" name="new_image" accept=".jpg, .jpeg, .png">
-                </div>
-                <div class="mb-3">
-                    <label for="formVideo" class="form-label">New Video (.mp4):</label>
-                    <input class="form-control" type="file" id="formVideo" name="new_video" accept=".mp4">
-                </div>
-                <button type="submit" class="btn w-100 btn-md btn-success">Save Changes</button>
-            </form>
-        </div>
+            <div class="mb-4">
+                <label for="spotlightDescription" class="form-label">Description:</label>
+                <textarea class="form-control" id="spotlightDescription" name="new_description" rows="5" required><?php echo htmlspecialchars($record['description']); ?></textarea>
+            </div>
+            <div class="mb-4">
+                <label for="formVideo" class="form-label">New Video (.mp4):</label>
+                <input class="form-control" type="file" id="formVideo" name="new_video" accept=".mp4">
+            </div>
+            <button type="submit" class="btn btn-submit w-100">Save Changes</button>
+        </form>
     </div>
 </body>
 </html>

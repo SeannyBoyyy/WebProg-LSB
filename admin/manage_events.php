@@ -179,11 +179,12 @@ if (isset($_POST['upload_event'])) {
                             </thead>
                             <tbody>
                                 <?php
-                                $result = mysqli_query($conn, "SELECT * FROM events ORDER BY event_date DESC");
+                                $result = mysqli_query($conn, "SELECT * FROM events ORDER BY event_id DESC");
                                 if ($result && $result->num_rows > 0): 
+                                    $counter = 1; // Initialize the counter
                                     while($row = $result->fetch_assoc()): ?>
                                         <tr>
-                                            <td><?= $row['event_id']; ?></td>
+                                            <td><?= $counter++; ?></td>
                                             <td><?= htmlspecialchars($row['title']); ?></td>
                                             <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                             <td><?= date('F j, Y', strtotime($row['event_date'])); ?></td>

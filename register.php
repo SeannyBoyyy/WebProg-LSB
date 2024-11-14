@@ -96,9 +96,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .success {
             color: #28a745;
         }
+                
+        /* Show dropdown on hover */
+        .nav-item.dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Add a smooth transition for dropdown appearance */
+        .dropdown-menu {
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
-<body>
+<body> 
     <!-- Header -->
     <header id="navbar" class="header py-3" style="background-color: #301934;">
         <div class="container">
@@ -109,9 +119,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" href="#programs">Programs</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">Spotlight</a></li>
-                        <li class="nav-item"><a class="nav-link" href="news.php">News</a></li>
+                        <!-- Programs Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="programsDropdown" role="button" aria-expanded="false">
+                                Programs
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="programsDropdown">
+                                <li><a class="dropdown-item" href="overview.php">Overview</a></li>
+                                <li><a class="dropdown-item" href="senior_high.php">Senior High</a></li>
+                                <li><a class="dropdown-item" href="college.php">College</a></li>
+                            </ul>
+                        </li>
+                        <!-- Other Navbar Items -->
+                        <li class="nav-item"><a class="nav-link" href="news.php">News & Spotlight</a></li>
                         <li class="nav-item"><a class="nav-link" href="merch.php">Merchandise</a></li>
                         <li class="nav-item"><a class="nav-link" href="events.php">Events</a></li>
                         <li class="nav-item"><a class="nav-link" href="#contact">Contact Us</a></li>

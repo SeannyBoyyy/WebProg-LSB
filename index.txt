@@ -84,7 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css" />
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
-    
+    <!-- AOS CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
 
     <style>
         /* Global Styles */
@@ -304,25 +305,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Discover the Highlights of <br> Lyceum of Subic Bay</h1>
-            <p>Stay updated with the latest news, events, and achievements from across our campus, including esports and other school activities.</p>
-            <a href="#programs" class="btn btn-primary">Explore Now</a>
+            <h1 data-aos="fade-up" data-aos-duration="1000">
+                Discover the Highlights of <br> Lyceum of Subic Bay
+            </h1>
+            <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">
+                Stay updated with the latest news, events, and achievements from across our campus, including esports and other school activities.
+            </p>
+            <a href="#programs" class="btn btn-primary" data-aos="zoom-in" data-aos-delay="400" data-aos-duration="1000">
+                Explore Now
+            </a>
         </div>
     </section>
 
 
     <!-- About Section -->
-    <section class="" id="about" style="background: #e9ecef;">
+    <section id="about" style="background: #e9ecef;">
         <div class="container py-5">
-            <h2 class="text-center section-title">About LSB Esports</h2>
-            <div class="section-title-hr"><!-- Underline --></div>
-            <p class="text-center mb-5">
+            <h2 class="text-center section-title" data-aos="fade-up" data-aos-duration="1000">About LSB Esports</h2>
+            <div class="section-title-hr" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000"><!-- Underline --></div>
+            <p class="text-center mb-5" data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">
                 Lyceum of Subic Bay is dedicated to advancing esports, showcasing the achievements and talents of our players through competitions and events.
             </p>
 
             <div class="row align-items-center">
                 <!-- Mission and Vision Section -->
-                <div class="col-md-6 p-5">
+                <div class="col-md-6 p-5" data-aos="fade-right" data-aos-duration="1000">
                     <h5>Our Mission</h5>
                     <p>
                         To empower the Lyceum of Subic Bay's esports community by providing an engaging and informative online platform that showcases our achievements, promotes our 
@@ -336,52 +343,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         to shine and contribute to the dynamic world of esports.
                     </p>
                     <div class="mt-4">
-                        <a href="#" class="btn btn-primary">Learn More</a>
+                        <a href="#" class="btn btn-primary" data-aos="zoom-in" data-aos-delay="600" data-aos-duration="1000">Learn More</a>
                     </div>
                 </div>
 
                 <!-- Image Section -->
-                <div class="col-md-6">
+                <div class="col-md-6" data-aos="fade-left" data-aos-duration="1000">
                     <img src="img/valo_bg.png" alt="LSB Esports" class="img-fluid rounded">
                 </div>
             </div>
 
             <!-- Sponsors Section -->
-            <div class="text-center mt-5">
+            <div class="text-center mt-5" data-aos="fade-up" data-aos-duration="1000">
                 <h6>Our Sponsors</h6>
                 <div class="d-flex justify-content-center gap-3 flex-wrap">
-                    <img src="img/acad_logo.png" alt="Sponsor 1" class="sponsor-logo">
-                    <img src="img/lsb_png.png" alt="Sponsor 2" class="sponsor-logo">
-                    <img src="img/prc_logo.png" alt="Sponsor 3" class="sponsor-logo">
-                    <img src="img/vortex_logo.jpg" alt="Sponsor 4" class="sponsor-logo">
-                    <img src="img/Lsb_logo.jpg" alt="Sponsor 5" class="sponsor-logo">
+                    <img src="img/acad_logo.png" alt="Sponsor 1" class="sponsor-logo" data-aos="zoom-in" data-aos-delay="200">
+                    <img src="img/lsb_png.png" alt="Sponsor 2" class="sponsor-logo" data-aos="zoom-in" data-aos-delay="300">
+                    <img src="img/prc_logo.png" alt="Sponsor 3" class="sponsor-logo" data-aos="zoom-in" data-aos-delay="400">
+                    <img src="img/vortex_logo.jpg" alt="Sponsor 4" class="sponsor-logo" data-aos="zoom-in" data-aos-delay="500">
+                    <img src="img/Lsb_logo.jpg" alt="Sponsor 5" class="sponsor-logo" data-aos="zoom-in" data-aos-delay="600">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Programs Section -->
-    <section class="" id="programs" style="background: #f3f4f6;">
+    <section id="programs" style="background: #f3f4f6;">
         <div class="container py-5">
             <!-- Introduction -->
-            <h2 class="section-title d-flex align-items-center justify-content-between" style="font-size: 2.5rem; font-weight: bold;">
+            <h2 class="section-title d-flex align-items-center justify-content-between" data-aos="fade-up" data-aos-duration="1000" style="font-size: 2.5rem; font-weight: bold;">
                 School Related Programs
                 <a href="overview.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
             </h2>
-            <p class="mb-5" style="font-size: 1.2rem;">
+            <p class="mb-5" data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" style="font-size: 1.2rem;">
                 Discover a variety of academic and extracurricular programs at LSB that empower students to excel both in the classroom and beyond. From cutting-edge courses to engaging student activities, there's something for everyone!
             </p>
 
             <!-- College Programs -->
-            <h3 class="text-center section-title mt-5 mb-4">College Programs</h3>
-            <div class="section-title-hr"></div>
+            <h3 class="text-center section-title mt-5 mb-4" data-aos="fade-right" data-aos-duration="1000">College Programs</h3>
+            <div class="section-title-hr" data-aos="zoom-in" data-aos-delay="200"></div>
 
             <div class="row">
                 <?php
                 if ($resultCollege->num_rows > 0) {
                     while ($row = $resultCollege->fetch_assoc()) {
                         ?>
-                        <div class="col-md-4 mb-4">
+                        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
                             <div class="card h-100">
                                 <img src="./admin/img/<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['title']); ?>">
                                 <div class="card-body">
@@ -399,7 +406,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Modal for program details -->
                         <div class="modal fade" id="programModal<?php echo $row['program_id']; ?>" tabindex="-1" aria-labelledby="programModalLabel<?php echo $row['program_id']; ?>" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
+                                <div class="modal-content" data-aos="zoom-in" data-aos-duration="1000">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="programModalLabel<?php echo $row['program_id']; ?>"><?php echo htmlspecialchars($row['title']); ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -424,15 +431,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <!-- Senior High Programs -->
-            <h3 class="text-center section-title mt-5 mb-4">Senior High Programs</h3>
-            <div class="section-title-hr"></div>
+            <h3 class="text-center section-title mt-5 mb-4" data-aos="fade-right" data-aos-delay="200">Senior High Programs</h3>
+            <div class="section-title-hr" data-aos="zoom-in" data-aos-delay="300"></div>
 
             <div class="row">
                 <?php
                 if ($resultSeniorHigh->num_rows > 0) {
                     while ($row = $resultSeniorHigh->fetch_assoc()) {
                         ?>
-                        <div class="col-md-4 mb-4">
+                        <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="400">
                             <div class="card h-100">
                                 <img src="./admin/img/<?php echo $row['image_url']; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($row['title']); ?>">
                                 <div class="card-body">
@@ -473,10 +480,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
                 ?>
             </div>
+
             <!-- View All Programs Button -->
-            <p class="text-center mt-3">To View All The Programs - Read All The Programs </p>
+            <p class="text-center mt-3" data-aos="fade-up" data-aos-duration="1000">To View All The Programs - Read All The Programs</p>
             <div class="text-center">
-                <a href="overview.php" class="btn btn-secondary">View All Programs</a>
+                <a href="overview.php" class="btn btn-secondary" data-aos="zoom-in" data-aos-delay="200">View All Programs</a>
             </div>
         </div>
     </section>
@@ -558,20 +566,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container py-5">
             <div class="row">
                 <div class="col-md-4"></div> <!-- Empty column for spacing -->
-                <div class="col-md-8 d-flex justify-content-between align-items-center mb-3">
+                <div class="col-md-8 d-flex justify-content-between align-items-center mb-3" data-aos="fade-left">
                     <h2 class="section-title mb-0">Latest News And Stories</h2> <!-- Remove extra margin from h2 -->
                     <h2 class="section-title">
                         <a href="news.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
                     </h2>
                 </div>
                 
-                <div class="col-12">
-                    <div class="section-title-hr"><!-- Underline --></div>
+                <div class="col-12" data-aos="zoom-in">
+                    <div class="section-title-hr"></div>
                 </div>
             </div>
 
             <div class="row my-5">
-                <div class="col-md-12">
+                <div class="col-md-12" data-aos="fade-up">
                     <div class="card">
                         <img src="img/valo_bg.png" class="img-fluid" alt="News 1" style="height: 700px;">
                         <div class="card-body">
@@ -603,40 +611,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             // Generate a unique ID for each modal
                             $modal_id = "newsModal" . $row['news_id'];
                     ?>
-                            <!-- News Card -->
-                            <div class="col-md-3 mb-3">
-                                <div class="card h-100" style="border: none;">
-                                    <img src="<?php echo $image_path; ?>" class="card-img-top" alt="News Image" style="object-fit: cover; height: 200px;">
-                                    <div class="card-body d-flex flex-column">
-                                        <p class="text-muted"><?php echo $author; ?> • <?php echo $published_date; ?></p>
-                                        <h5 class="card-title"><?php echo $title; ?></h5>
-                                        <p class="text-muted"><?php echo $category; ?> • <?php echo substr($content, 0, 45); ?>
-                                        <a type="button" class="btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modal_id; ?>">See more...</a> </p><!-- See more button to trigger modal -->
-                                    </div>
-                                </div>
+                    <!-- News Card -->
+                    <div class="col-md-3 mb-3" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card h-100" style="border: none;">
+                            <img src="<?php echo $image_path; ?>" class="card-img-top" alt="News Image" style="object-fit: cover; height: 200px;">
+                            <div class="card-body d-flex flex-column">
+                                <p class="text-muted"><?php echo $author; ?> • <?php echo $published_date; ?></p>
+                                <h5 class="card-title"><?php echo $title; ?></h5>
+                                <p class="text-muted"><?php echo $category; ?> • <?php echo substr($content, 0, 45); ?>
+                                <a type="button" class="btn-link" data-bs-toggle="modal" data-bs-target="#<?php echo $modal_id; ?>">See more...</a> </p>
                             </div>
+                        </div>
+                    </div>
 
-                            <!-- Modal for displaying full news content -->
-                            <div class="modal fade" id="<?php echo $modal_id; ?>" tabindex="-1" aria-labelledby="<?php echo $modal_id; ?>Label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="<?php echo $modal_id; ?>Label"><?php echo $title; ?></h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <img src="<?php echo $image_path; ?>" class="img-fluid mb-3" alt="News Image" style="object-fit: cover; width: 100%; height: 300px;">
-                                            <p><strong>Author:</strong> <?php echo $author; ?></p>
-                                            <p><strong>Published:</strong> <?php echo $published_date; ?></p>
-                                            <p><strong>Category:</strong> <?php echo $category; ?></p>
-                                            <p><strong>Content:</strong> <?php echo $full_content; ?></p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
+                    <!-- Modal for displaying full news content -->
+                    <div class="modal fade" id="<?php echo $modal_id; ?>" tabindex="-1" aria-labelledby="<?php echo $modal_id; ?>Label" aria-hidden="true">
+                        <div class="modal-dialog" data-aos="zoom-in">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="<?php echo $modal_id; ?>Label"><?php echo $title; ?></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="<?php echo $image_path; ?>" class="img-fluid mb-3" alt="News Image" style="object-fit: cover; width: 100%; height: 300px;">
+                                    <p><strong>Author:</strong> <?php echo $author; ?></p>
+                                    <p><strong>Published:</strong> <?php echo $published_date; ?></p>
+                                    <p><strong>Category:</strong> <?php echo $category; ?></p>
+                                    <p><strong>Content:</strong> <?php echo htmlspecialchars($row['content']); ?></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                     <?php
                         }
                     } else {
@@ -647,7 +655,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <p class="text-center mt-3">To View All The News, Stories and Spotlight - Read All The News, Stories, Spotlight and Participate</p>
-            <div class="text-center">
+            <div class="text-center" data-aos="fade-up">
                 <a href="events.php" class="btn btn-secondary">View All Events</a>
             </div>
         </div>
@@ -656,10 +664,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Merchandise Section -->
     <section class="" id="merchandise" style="background: #fff;">
         <div class="container py-5">
-            <div class="row">
+            <div class="row" data-aos="fade-up">
                 <div class="col-md-4"></div> <!-- Empty column for spacing -->
                 <div class="col-md-8 d-flex justify-content-between align-items-center mb-3">
-                    <h2 class="section-title mb-0">LSB Esports Merchandise</h2> <!-- Remove extra margin from h2 -->
+                    <h2 class="section-title mb-0">LSB Esports Merchandise</h2>
                     <h2 class="section-title">
                         <a href="merch.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
                     </h2>
@@ -671,7 +679,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             
             <div class="row my-5">
-                <div class="col-md-12">
+                <div class="col-md-12" data-aos="fade-up" data-aos-delay="200">
                     <div class="card">
                         <img src="img/merch_prev.jpg" class="img-fluid" alt="Jersey">
                         <div class="card-body">
@@ -691,8 +699,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     while ($row = $merch_result->fetch_assoc()) {
                         // Display card for each item
                         echo '
-                        <div class="col-md-4 mb-4">
-                            <div class="card">
+                        <div class="col-md-4 mb-4" data-aos="zoom-in" data-aos-delay="300">
+                            <div class="card h-100">
                                 <img src="./admin/img/' . $row['image_url'] . '" class="card-img-top" alt="' . $row['name'] . '">
                                 <div class="card-body">
                                     <h5 class="card-title">' . $row['name'] . '</h5>
@@ -700,13 +708,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal' . $row['merch_id'] . '">View Details</button>
                                 </div>
                             </div>
-                        </div>';
-
-                        // Modal for each item
-                        echo '
+                        </div>
                         <div class="modal fade" id="itemModal' . $row['merch_id'] . '" tabindex="-1" aria-labelledby="itemModalLabel' . $row['merch_id'] . '" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content" data-aos="fade-up">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="itemModalLabel' . $row['merch_id'] . '">' . $row['name'] . '</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -729,6 +734,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo '<p class="text-center">No merchandise items available at the moment.</p>';
                 }
                 ?>
+            </div>
             <p class="text-center mt-3">Promotional Purposes Only - No Online Transactions</p>
             <div class="text-center">
                 <a href="merch.php" class="btn btn-secondary">View All Merchandise</a>
@@ -736,21 +742,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
+
     <!-- Events Section -->
     <section class="" id="events" style="background: #f9f9f9;">
         <div class="container py-5">
-        <!-- Introduction -->
-        <h2 class="section-title d-flex align-items-center justify-content-between" style="font-size: 2.5rem; font-weight: bold;">
-            Upcoming Events
-            <a href="events.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
-        </h2>
-        <p class="mb-5" style="font-size: 1.2rem;">
-            Join us for exciting events showcasing incredible talents, inspiring experiences, and opportunities to connect. Explore our featured and upcoming events below, and don’t miss out on a chance to participate!
-        </p>
+            <!-- Introduction -->
+            <h2 class="section-title d-flex align-items-center justify-content-between" 
+                style="font-size: 2.5rem; font-weight: bold;" data-aos="fade-up">
+                Upcoming Events
+                <a href="events.php" class="see-more-link text-primary text-decoration-none" 
+                style="font-size: 1rem; font-weight: normal;">See More →</a>
+            </h2>
+            <p class="mb-5" style="font-size: 1.2rem;" data-aos="fade-up" data-aos-delay="100">
+                Join us for exciting events showcasing incredible talents, inspiring experiences, and opportunities to connect. Explore our featured and upcoming events below, and don’t miss out on a chance to participate!
+            </p>
 
             <div class="row">
                 <!-- Featured Event Column -->
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-6 mb-4" data-aos="fade-right">
                     <h3 class="section-title text-center">Featured</h3>
                     <div class="section-title-hr"></div>
                     <?php if ($featured_event): ?>
@@ -758,10 +767,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <h2 style="font-size: 2rem; font-weight: bold;"><?php echo htmlspecialchars($featured_event['title']); ?></h2>
                             <p class="text-uppercase mb-4" style="color: #a0c334;">Now You Can Watch the Talent</p>
                             <div id="countdown" class="fs-1 mb-3" style="font-weight: bold;"></div>
-                            <a href="#featured-event" class="btn btn-success btn-lg mb-4" style="background-color: #a0c334; border-color: #a0c334;">Start In</a>
+                            <a href="#featured-event" class="btn btn-success btn-lg mb-4" 
+                            style="background-color: #a0c334; border-color: #a0c334;">Start In</a>
                             <p><strong>Date:</strong> <?php echo date('F j - F j, Y', strtotime($featured_event['event_date'])); ?></p>
                             <p><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($featured_event['location']); ?></p>
-                            <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 100%;">
+                            <img src="./admin/img/<?php echo $featured_event['image_url']; ?>" 
+                                class="img-fluid img-thumbnail mb-3" alt="Featured Image" style="max-width: 100%;">
                         </div>
                     <?php else: ?>
                         <p>No featured event at the moment.</p>
@@ -769,12 +780,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <!-- Other Events Column -->
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-left">
                     <h3 class="section-title text-center">Others</h3>
                     <div class="section-title-hr"></div>
                     <div class="row">
                         <?php while ($event = mysqli_fetch_assoc($events_result)) : ?>
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-6 mb-4" data-aos="zoom-in" data-aos-delay="200">
                             <div class="card">
                                 <img src="./admin/img/<?php echo htmlspecialchars($event['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($event['title']); ?>">
                                 <div class="card-body">
@@ -799,7 +810,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Modal for each event -->
                         <div class="modal fade" id="eventModal<?php echo $event['event_id']; ?>" tabindex="-1" aria-labelledby="eventModalLabel<?php echo $event['event_id']; ?>" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
+                                <div class="modal-content" data-aos="fade-up">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="eventModalLabel<?php echo $event['event_id']; ?>"><?php echo htmlspecialchars($event['title']); ?></h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -834,10 +845,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Contact Section -->
     <section class="" id="contact" style="background: #e9ecef;">
         <div class="container py-5">
-            <h2 class="text-center mb-4 section-title">Contact Us</h2>
-            <div class="section-title-hr"></div>
+            <h2 class="text-center mb-4 section-title" data-aos="fade-up">Contact Us</h2>
+            <div class="section-title-hr" data-aos="zoom-in"></div>
             <div class="row text-center mb-4">
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" data-aos="fade-right">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <i class="bi bi-geo-alt fs-1 text-primary"></i>
@@ -846,7 +857,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" data-aos="fade-up">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <i class="bi bi-telephone fs-1 text-primary"></i>
@@ -855,7 +866,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-3">
+                <div class="col-md-4 mb-3" data-aos="fade-left">
                     <div class="card shadow-sm">
                         <div class="card-body">
                             <i class="bi bi-envelope fs-1 text-primary"></i>
@@ -867,7 +878,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             
             <div class="row">
-                <div class="col-lg-6 mb-4">
+                <div class="col-lg-6 mb-4" data-aos="zoom-in">
                     <div class="card shadow-sm">
                         <iframe 
                             src="https://maps.google.com/maps?q=lyceum%20of%20subic%20bay&t=&z=13&ie=UTF8&iwloc=&output=embed" 
@@ -879,7 +890,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </iframe>
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-up">
                     <form method="post" action="">
                         <div class="mb-3">
                             <label for="name" class="form-label">Your Name</label>
@@ -903,6 +914,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section>
+
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section light-background py-5">
@@ -1031,6 +1043,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </section><!-- /Testimonials Section -->
+
+
+    <!-- AOS JS -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
     
     <!-- Chatbot Section -->
     <script>

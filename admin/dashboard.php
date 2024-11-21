@@ -3,9 +3,11 @@ include('../config/config.php'); // Database connection
 ?>
 
 <style>
+    /* Dashboard Styles */
     .card-custom {
-        border-radius: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     }
 
@@ -14,31 +16,52 @@ include('../config/config.php'); // Database connection
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
     }
 
-    .card-custom .card-body {
-        text-align: center;
-        padding: 2rem;
+    /* Header Styles */
+    .card-header-custom {
+        background: rgba(0, 0, 0, 0.1);
+        color: #fff;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
     }
 
-    .card-title {
-        font-size: 1.2rem;
-        color: #6c757d;
-        margin-bottom: 0.5rem;
-    }
-
-    .card-text {
+    .card-header-custom .icon {
         font-size: 2.5rem;
-        font-weight: bold;
-        margin-bottom: 0;
+        margin-right: 0.75rem;
     }
 
-    .icon {
-        font-size: 3rem;
-        margin-bottom: 0.5rem;
-        color: #007bff;
+    /* Footer Styles */
+    .card-footer-custom {
+        background: rgba(0, 0, 0, 0.05);
+        text-align: center;
+        font-size: 0.9rem;
+        padding: 0.75rem;
     }
 
-    .row {
-        justify-content: center;
+    .card-footer-custom a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+    }
+
+    /* Colors */
+    .card-blue {
+        background-color: #007bff;
+        color: #fff;
+    }
+
+    .card-green {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .card-yellow {
+        background-color: #ffc107;
+        color: #343a40;
+    }
+
+    .card-red {
+        background-color: #dc3545;
+        color: #fff;
     }
 
     .dashboard-title {
@@ -46,113 +69,144 @@ include('../config/config.php'); // Database connection
         font-weight: bold;
         color: #343a40;
     }
+
+    .row {
+        justify-content: center;
+    }
 </style>
+    
+<div class="container my-5">
+    <h2 class="mb-4 text-center dashboard-title">Dashboard</h2>
 
-<h2 class="mb-4 text-center dashboard-title">Dashboard</h2>
-
-<div class="row">
-    <!-- Total Programs Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-book"></i>
+    <div class="row">
+        <!-- Total Programs Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-blue">
+                <div class="card-header-custom">
+                    <i class="fas fa-book icon"></i>
+                    <h5 class="m-0">Total Programs</h5>
                 </div>
-                <h5 class="card-title">Total Programs</h5>
-                <h2 class="card-text text-primary" id="totalPrograms">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalPrograms">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=programs">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Spotlight Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-star"></i>
+        <!-- Total Spotlight Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-green">
+                <div class="card-header-custom">
+                    <i class="fas fa-star icon"></i>
+                    <h5 class="m-0">Total Spotlight</h5>
                 </div>
-                <h5 class="card-title">Total Spotlight</h5>
-                <h2 class="card-text text-primary" id="totalSpotlight">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalSpotlight">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=spotlight">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Total News Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-newspaper"></i>
+        <!-- Total News Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-yellow">
+                <div class="card-header-custom">
+                    <i class="fas fa-newspaper icon"></i>
+                    <h5 class="m-0">Total News</h5>
                 </div>
-                <h5 class="card-title">Total News</h5>
-                <h2 class="card-text text-primary" id="totalNews">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalNews">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=news">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Merchandise Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-shopping-bag"></i>
+        <!-- Total Merchandise Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-red">
+                <div class="card-header-custom">
+                    <i class="fas fa-shopping-bag icon"></i>
+                    <h5 class="m-0">Total Merchandise</h5>
                 </div>
-                <h5 class="card-title">Total Merchandise</h5>
-                <h2 class="card-text text-primary" id="totalMerchandise">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalMerchandise">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=merch">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Events Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-calendar-alt"></i>
+        <!-- Total Events Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-blue">
+                <div class="card-header-custom">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <h5 class="m-0">Total Events</h5>
                 </div>
-                <h5 class="card-title">Total Events</h5>
-                <h2 class="card-text text-primary" id="totalEvents">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalEvents">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=events">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Upcoming Events Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-calendar-check"></i>
+        <!-- Upcoming Events Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-green">
+                <div class="card-header-custom">
+                    <i class="fas fa-clock icon"></i>
+                    <h5 class="m-0">Upcoming Events</h5>
                 </div>
-                <h5 class="card-title">Upcoming Events</h5>
-                <h2 class="card-text text-primary" id="upcomingEvents">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="upcomingEvents">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=events">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Registered Admins Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-users"></i>
+        <!-- Total Messages Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-yellow">
+                <div class="card-header-custom">
+                    <i class="fas fa-envelope icon"></i>
+                    <h5 class="m-0">Total Messages</h5>
                 </div>
-                <h5 class="card-title">Registered Admins</h5>
-                <h2 class="card-text text-primary" id="registeredUsers">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="totalMessages">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=messages">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
-    </div>
 
-    <!-- Total Messages Card -->
-    <div class="col-md-4 mb-4">
-        <div class="card card-custom">
-            <div class="card-body">
-                <div class="icon">
-                    <i class="fas fa-envelope"></i>
+        <!-- Registered Users Card -->
+        <div class="col-md-4 mb-4">
+            <div class="card card-custom card-red">
+                <div class="card-header-custom">
+                    <i class="fas fa-users icon"></i>
+                    <h5 class="m-0">Registered Users</h5>
                 </div>
-                <h5 class="card-title">Total Messages</h5>
-                <h2 class="card-text text-primary" id="totalMessages">0</h2>
+                <div class="card-body text-center">
+                    <h2 id="registeredUsers">0</h2>
+                </div>
+                <div class="card-footer-custom">
+                    <a href="index.php?active=admins">More info <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
             </div>
         </div>
+
     </div>
 </div>
 

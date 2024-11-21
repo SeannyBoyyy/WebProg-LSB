@@ -122,10 +122,10 @@ $newsResult = mysqli_query($conn, $newsQuery);
                             <?php $counter = 1; // Initialize the counter ?>
                             <tr>
                                 <td><?= $counter++; ?></td>
-                                <td><?= $row['title']; ?></td>
+                                <td><?= htmlspecialchars($row['title']); ?></td>
                                 <td><?= htmlspecialchars(substr($row['content'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="News Image" width="100"></td>
-                                <td><?= $row['author']; ?></td>
+                                <td><?= htmlspecialchars($row['author']); ?></td>
                                 <td>
                                     <form action="crud.php" method="post">
                                         <input type="hidden" name="id" value="<?= $row['news_id']; ?>">

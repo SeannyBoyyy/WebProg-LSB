@@ -26,11 +26,17 @@ function isShowActive($page, $activePage) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - LSB Esports</title>
+    <!-- Logo CSS -->
+    <link rel="icon" type="image/x-icon" href="../img/lsb_png.png">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
     <!-- Icons CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         /* Navbar */
         .header {
@@ -78,7 +84,7 @@ function isShowActive($page, $activePage) {
     <header id="navbar" class="header py-3" style="background-color: #301934;">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="index.php">Lyceum of Subic Bay</a>
+                <a class="navbar-brand" href="../index.php"><img src="../img/lyce_logo_v2.png" style="width: 100%;max-width: 75%;"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -90,9 +96,9 @@ function isShowActive($page, $activePage) {
                                 Programs
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="programsDropdown">
-                                <li><a class="dropdown-item" href="overview.php">Overview</a></li>
-                                <li><a class="dropdown-item" href="senior_high.php">Senior High</a></li>
-                                <li><a class="dropdown-item" href="college.php">College</a></li>
+                                <li><a class="dropdown-item" href="../overview.php">Overview</a></li>
+                                <li><a class="dropdown-item" href="../senior_high.php">Senior High</a></li>
+                                <li><a class="dropdown-item" href="../college.php">College</a></li>
                             </ul>
                         </li>
                         <!-- Other Navbar Items -->
@@ -134,6 +140,9 @@ function isShowActive($page, $activePage) {
                     </button>
                     <button class="nav-link <?php echo isActive('merch', $activePage); ?>" data-bs-toggle="pill" data-bs-target="#v-pills-merch">
                         <i class="bi bi-basket-fill me-2"></i> Manage Merchandise
+                    </button>
+                    <button class="nav-link <?php echo isActive('admins', $activePage); ?>" data-bs-toggle="pill" data-bs-target="#v-pills-admins">
+                        <i class="bi bi-person-fill me-2"></i> Manage Admins
                     </button>
                     <button class="nav-link <?php echo isActive('messages', $activePage); ?>" data-bs-toggle="pill" data-bs-target="#v-pills-messages">
                         <i class="bi bi-chat-left-text-fill me-2"></i>Messages
@@ -177,6 +186,11 @@ function isShowActive($page, $activePage) {
                     <div class="tab-pane <?php echo isShowActive('merch', $activePage); ?>" id="v-pills-merch">
                         <div class="container my-4">
                             <?php include('manage_merch.php'); ?>
+                        </div>
+                    </div>
+                    <div class="tab-pane <?php echo isShowActive('admins', $activePage); ?>" id="v-pills-admins">
+                        <div class="container my-4">
+                            <?php include('manage_admins.php'); ?>
                         </div>
                     </div>
                     <div class="tab-pane <?php echo isShowActive('messages', $activePage); ?>" id="v-pills-messages">

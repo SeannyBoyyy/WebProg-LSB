@@ -432,6 +432,14 @@ if (isset($_POST['delete_program'])) {
     }
 }
 
+// Admins Delete operation
+if (isset($_POST['admin_delete'])) {
+    $admin_id = $_POST['id'];
+    mysqli_query($conn, "DELETE FROM admins WHERE admin_id = $admin_id");
+    header("Location: index.php?active=admins");
+    exit();
+}
+
 // -------------------- OTHERS SECTION ------------------------
 
 // Handle the publish news request

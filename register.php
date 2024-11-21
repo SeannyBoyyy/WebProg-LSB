@@ -4,35 +4,39 @@ require_once './config/config.php'; // Include your database configuration
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
-    $confirm_password = $_POST['confirm_password'];
-    $email = $_POST['email'];
-    $full_name = $_POST['full_name'];
+    // Sanitize input to prevent XSS
+    $username = htmlspecialchars(trim($_POST['username']));
+    $password = htmlspecialchars(trim($_POST['password']));
+    $confirm_password = htmlspecialchars(trim($_POST['confirm_password']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $full_name = htmlspecialchars(trim($_POST['full_name']));
 
     // Validate form inputs
     if (empty($username) || empty($password) || empty($confirm_password) || empty($email) || empty($full_name)) {
         $error = 'Please fill in all fields.';
     } elseif ($password !== $confirm_password) {
         $error = 'Passwords do not match.';
-    } elseif (!preg_match('/^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/', $password)) {
-        // Password validation: at least 8 characters, 1 number, 1 uppercase letter
-        $error = 'Password must be at least 8 characters long, with at least one uppercase letter and one number.';
+    } elseif (!preg_match('/^(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{8,}$/', $password)) {
+        // Password validation: at least 8 characters, 1 number, 1 uppercase letter, and 1 special character
+        $error = 'Password must be at least 8 characters long, with at least one uppercase letter, one number, and one special character.';
     } else {
-        // Check if the username already exists
-        $stmt = $conn->prepare("SELECT * FROM admins WHERE username = ?");
-        $stmt->bind_param("s", $username);
+        // Check if username or email already exists
+        $stmt = $conn->prepare("SELECT * FROM admins WHERE username = ? OR email = ?");
+        $stmt->bind_param("ss", $username, $email);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            $error = 'Username already exists.';
+            $existing = $result->fetch_assoc();
+            $error = ($existing['username'] === $username) 
+                ? 'Username already exists.' 
+                : 'Email is already registered.';
         } else {
             // Hash the password
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            // Prepare SQL query to insert new admin
-            $stmt = $conn->prepare("INSERT INTO admins (username, password_hash, email, full_name, created_at) VALUES (?, ?, ?, ?, NOW())");
+            // Insert new admin into the database
+            $stmt = $conn->prepare("INSERT INTO admins (username, password_hash, email, full_name, created_at, status) VALUES (?, ?, ?, ?, NOW(), 'pending')");
             $stmt->bind_param("ssss", $username, $hashed_password, $email, $full_name);
 
             if ($stmt->execute()) {
@@ -41,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $error = 'There was an error during registration. Please try again.';
             }
         }
+        $stmt->close();
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -51,6 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Register</title>
+    <!-- Logo CSS -->
+    <link rel="icon" type="image/x-icon" href="img/lsb_png.png">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts CSS -->
@@ -83,12 +91,39 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             background-color: #f8f9fa;
         }
         .register-container {
-            max-width: 500px;
-            margin: 50px auto;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .register-box {
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+        }
+        .register-left {
+            background: linear-gradient(135deg, #301934, #5e3b8f);
+            color: white;
+            padding: 50px 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        .register-left h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .register-left p {
+            font-size: 1.1rem;
+        }
+        .register-right {
+            padding: 40px 30px;
         }
         .error {
             color: #dc3545;
@@ -96,19 +131,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         .success {
             color: #28a745;
         }
-                
-        /* Show dropdown on hover */
-        .nav-item.dropdown:hover .dropdown-menu {
-            display: block;
+        .btn-primary {
+            background-color: #301934;
+            border-color: #301934;
         }
-
-        /* Add a smooth transition for dropdown appearance */
-        .dropdown-menu {
-            transition: all 0.3s ease;
+        .btn-primary:hover {
+            background-color: #5e3b8f;
+            border-color: #5e3b8f;
         }
     </style>
 </head>
-<body> 
+<body>
     <!-- Header -->
     <header id="navbar" class="header py-3" style="background-color: #301934;">
         <div class="container">
@@ -141,48 +174,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </header>
 
+    <!-- Registration Form -->
     <div class="register-container">
-        <h2 class="text-center mb-4">Admin Registration</h2>
-
-        <?php if (isset($error)): ?>
-            <div class="alert alert-danger"><?= $error; ?></div>
-        <?php endif; ?>
-
-        <?php if (isset($success)): ?>
-            <div class="alert alert-success"><?= $success; ?></div>
-        <?php endif; ?>
-
-        <form action="register.php" method="POST">
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" name="username" class="form-control" required>
+        <div class="register-box row g-0">
+            <div class="col-lg-6 register-left">
+                <h1>Welcome to Admin Registration</h1>
+                <p>Create an account to manage your website efficiently.</p>
             </div>
+            <div class="col-lg-6 register-right">
+                <h2 class="text-center mb-4">Register</h2>
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger"><?= $error; ?></div>
+                <?php elseif (isset($success)): ?>
+                    <div class="alert alert-success"><?= $success; ?></div>
+                <?php endif; ?>
 
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" name="password" class="form-control" required>
+                <form action="register.php" method="POST">
+                    <div class="mb-3">
+                        <label for="full_name" class="form-label">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" id="username" name="username" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="confirm_password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Register</button>
+                </form>
+                <div class="mt-3 text-center">
+                    <p>Already have an account? <a href="login-page.php">Login here</a></p>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <label for="confirm_password" class="form-label">Confirm Password</label>
-                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="full_name" class="form-label">Full Name</label>
-                <input type="text" id="full_name" name="full_name" class="form-control" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Register</button>
-        </form>
-
-        <div class="mt-3 text-center">
-            <p>Already have an account? <a href="login-page.php">Login here</a></p>
         </div>
     </div>
 
@@ -199,11 +232,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
     </footer>
 
-    <!-- Bootstrap JS (optional) -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
+
 
 <?php
 // Close the database connection

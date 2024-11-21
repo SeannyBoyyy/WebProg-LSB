@@ -74,7 +74,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LSB School E-SPORTS</title>
+    <title>LSB School & E-SPORTS</title>
+    <!-- Logo CSS -->
+    <link rel="icon" type="image/x-icon" href="img/lsb_png.png">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
@@ -406,7 +409,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="modal-body">
                                         <img src="./admin/img/<?php echo $row['image_url']; ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($row['title']); ?>">
-                                        <span class="badge bg-primary">College</span>
+                                        <div>    
+                                            <span class="badge bg-primary">College</span>
+                                        </div>
                                         <p class="mt-3"><?php echo htmlspecialchars($row['description']); ?></p>
                                     </div>
                                     <div class="modal-footer">
@@ -457,7 +462,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     </div>
                                     <div class="modal-body">
                                         <img src="./admin/img/<?php echo $row['image_url']; ?>" class="img-fluid mb-3" alt="<?php echo htmlspecialchars($row['title']); ?>">
-                                        <span class="badge bg-secondary">Senior High</span>
+                                        <div>
+                                            <span class="badge bg-secondary">Senior High</span>
+                                        </div>
                                         <p class="mt-3"><?php echo htmlspecialchars($row['description']); ?></p>
                                     </div>
                                     <div class="modal-footer">
@@ -842,7 +849,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-geo-alt fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Address</h5>
-                            <p class="card-text">Lyceum of Subic Bay, Zambales, Philippines</p>
+                            <p class="card-text">73 Rizal Hwy, Central Business District, Subic Bay Freeport Zone, Zambales</p>
                         </div>
                     </div>
                 </div>
@@ -851,7 +858,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-telephone fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Call Us</h5>
-                            <p class="card-text">(+63) 123-456-7890</p>
+                            <p class="card-text">(047) 252 5940 , <br> 09285020242
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -860,7 +868,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-envelope fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Email Us</h5>
-                            <p class="card-text">info@lsbesports.ph</p>
+                            <p class="card-text">lyceumsubicbay@lsb.edu.ph , <br> info@lsb.edu.ph</p>
                         </div>
                     </div>
                 </div>
@@ -908,9 +916,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <section id="testimonials" class="testimonials section light-background py-5">
         <!-- Section Title -->
         <div class="container text-center" data-aos="fade-up">
-            <h2 class="mb-4 section-title">Testimonials</h2>
+            <h2 class="mb-4 section-title">Messages</h2>
             <div class="section-title-hr"><!-- Underline --></div>
-            <p class="mb-5">Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+            <p class="mb-5">The message of executives is for all students who have a dream.</p>
         </div><!-- End Section Title -->
 
         <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -952,12 +960,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                                Master in Public Mgmt. (ip)<br>
+                                Bachelor of Laws<br>
+                                Bachelor in Political Science
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Saul Goodman</h3>
-                                <h4 class="text-muted">Ceo &amp; Founder</h4>
+                                <img src="img/randy.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>Mr. Randy L. Baguling</h3>
+                                <h4 class="text-muted">Asst. Research Director</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -968,12 +978,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                                It is with pride, that I congratulate the men and women behind the “debut” publication of the Lyceum of Subic Bay Inc. (LSBI)’s Research Journal. With Mr. Roel B. Dimalanta as Research Director, in his concurrent position as Head of the Office of Student Affairs and Services (OSAS) on the lead, this accomplishment is no mean feat. A major development, the Journal shall now provide a venue for both the faculty members and students’ research outputs.
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Sara Wilsson</h3>
-                                <h4 class="text-muted">Designer</h4>
+                                <img src="img/vp.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>DR. DIENA B. OROCEO</h3>
+                                <h4 class="text-muted">VP for Academic Affairs</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -984,12 +994,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                                It is a fact that progress and development in the various fields of endeavor, came about because of studies and research conducted by concerned individuals. Higher Education Institutions (HEIs), like Lyceum of Subic Bay, Inc. (LSBI) therefore, is duty-bound to hone their students’ knowledge, skills and abilities to search and discover answers to certain unknowns. Through this maiden issue of the school’s publication of the Online Research Journal, interested Lyceans will now be able to put to use their writing and investigative skills, to find something new to innovative or improve on something already existing.
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Jena Karlis</h3>
-                                <h4 class="text-muted">Store Owner</h4>
+                                <img src="img/ceo.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>ALFONSO E. BORDA</h3>
+                                <h4 class="text-muted">President/CEO</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -1000,12 +1010,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                                Doctor in Philosophy major in Educational Mgmt.(ip)<br>
+                                MA major in Educational Administration<br>
+                                BA major in English
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Matt Brandon</h3>
-                                <h4 class="text-muted">Freelancer</h4>
+                                <img src="img/roel.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>Mr. Roel B. Dimalanta</h3>
+                                <h4 class="text-muted">Research Director</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -1016,12 +1028,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                                • Engineering Programs • Architecture<br>
+                                • Business Administration • Information Technology<br>
+                                • Accountancy • Customs Administration <br>
+                                • Hospitality Management • Tourism<br>
+                                • Psychology • Criminology<br>
+                                <br>
+                                • College Librarian • MIS Coordinator<br>
+                                • Guidance Counselor • Asst. to the HR Manager
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>John Larson</h3>
-                                <h4 class="text-muted">Entrepreneur</h4>
+                                <img src="img/2.png" class="testimonial-img mb-3" alt="">
+                                <h3>Representatives</h3>
+                                <h4 class="text-muted">Department &amp Secretariat</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -1034,16 +1053,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     <!-- Chatbot Section -->
     <script>
-    window.embeddedChatbotConfig = {
-    chatbotId: "n6QilLoDecBUhKqbS5JPL",
-    domain: "www.chatbase.co"
-    }
-    </script>
-    <script
-    src="https://www.chatbase.co/embed.min.js"
-    chatbotId="n6QilLoDecBUhKqbS5JPL"
-    domain="www.chatbase.co"
-    defer>
+        window.embeddedChatbotConfig = {
+        chatbotId: "U5QHg3tK3ESsfMbpbLEWt",
+        domain: "www.chatbase.co"
+        }
+        </script>
+        <script
+        src="https://www.chatbase.co/embed.min.js"
+        chatbotId="U5QHg3tK3ESsfMbpbLEWt"
+        domain="www.chatbase.co"
+        defer>
     </script><!-- /Chatbot Section -->
 
     <script>

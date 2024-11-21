@@ -63,6 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Program Overview</title>
+    <!-- Logo CSS -->
+    <link rel="icon" type="image/x-icon" href="img/lsb_png.png">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Fonts CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@500&display=swap" rel="stylesheet">
@@ -301,22 +304,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container my-5">
             <h1 class="text-center mb-4 section-title">Program Offerings</h1>
             <div class="section-title-hr"></div>
+
             <!-- Senior High Programs -->
-            <h2 id="senior_high" class="my-4 d-flex align-items-center justify-content-between">Senior High Programs <a href="senior_high.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a></h2>
+            <h2 id="senior_high" class="my-4 d-flex align-items-center justify-content-between">Senior High Programs 
+                <a href="senior_high.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+            </h2>
             <div class="row">
                 <?php
                 if ($result_senior_high->num_rows > 0) {
                     while ($row = $result_senior_high->fetch_assoc()) {
+                        $program_id = $row['program_id'];
                         echo '
                         <div class="col-md-4 mb-4">
                             <div class="card h-100">
-                                <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="card-img-top" alt="' . htmlspecialchars($row['title']) . '">
+                                <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="card-img-top" alt="' . htmlspecialchars($row['title']) . '" data-bs-toggle="modal" data-bs-target="#seniorHighModal' . $program_id . '">
                                 <div class="card-body">
                                     <h5 class="card-title">' . htmlspecialchars($row['title']) . '</h5>
-                                    <p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 100)) . '...</p>
+                                    <p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 80)) . '...
+                                        <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#seniorHighModal' . $program_id . '">Read More</a>
+                                    </p>
                                 </div>
                                 <div class="card-footer">
                                     <small class="text-muted">Category: ' . htmlspecialchars($row['category']) . '</small>
+                                </div>
+                            </div>
+                        </div>';
+
+                        // Modal for Senior High Program
+                        echo '
+                        <div class="modal fade" id="seniorHighModal' . $program_id . '" tabindex="-1" aria-labelledby="seniorHighModalLabel' . $program_id . '" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="seniorHighModalLabel' . $program_id . '">' . htmlspecialchars($row['title']) . '</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="img-fluid mb-3" alt="' . htmlspecialchars($row['title']) . '">
+                                        <p>' . htmlspecialchars($row['description']) . '</p>
+                                        <small class="text-muted">Category: ' . htmlspecialchars($row['category']) . '</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>';
@@ -328,21 +355,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <!-- College Programs -->
-            <h2 id="college" class="my-4 d-flex align-items-center justify-content-between">College Programs <a href="college.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a></h2>
+            <h2 id="college" class="my-4 d-flex align-items-center justify-content-between">College Programs 
+                <a href="college.php" class="see-more-link text-primary text-decoration-none" style="font-size: 1rem; font-weight: normal;">See More →</a>
+            </h2>
             <div class="row">
                 <?php
                 if ($result_college->num_rows > 0) {
                     while ($row = $result_college->fetch_assoc()) {
+                        $program_id = $row['program_id'];
                         echo '
                         <div class="col-md-4 mb-4">
                             <div class="card h-100">
-                                <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="card-img-top" alt="' . htmlspecialchars($row['title']) . '">
+                                <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="card-img-top" alt="' . htmlspecialchars($row['title']) . '" data-bs-toggle="modal" data-bs-target="#collegeModal' . $program_id . '">
                                 <div class="card-body">
                                     <h5 class="card-title">' . htmlspecialchars($row['title']) . '</h5>
-                                    <p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 100)) . '...</p>
+                                    <p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 80)) . '...
+                                        <a href="#" class="text-primary" data-bs-toggle="modal" data-bs-target="#collegeModal' . $program_id . '">Read More</a>
+                                    </p>
                                 </div>
                                 <div class="card-footer">
                                     <small class="text-muted">Category: ' . htmlspecialchars($row['category']) . '</small>
+                                </div>
+                            </div>
+                        </div>';
+
+                        // Modal for College Program
+                        echo '
+                        <div class="modal fade" id="collegeModal' . $program_id . '" tabindex="-1" aria-labelledby="collegeModalLabel' . $program_id . '" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="collegeModalLabel' . $program_id . '">' . htmlspecialchars($row['title']) . '</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <img src="./admin/img/' . htmlspecialchars($row['image_url']) . '" class="img-fluid mb-3" alt="' . htmlspecialchars($row['title']) . '">
+                                        <p>' . htmlspecialchars($row['description']) . '</p>
+                                        <small class="text-muted">Category: ' . htmlspecialchars($row['category']) . '</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>';
@@ -355,6 +405,233 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </section>
 
+    <!-- Requirements & Enrollment Procedures Section -->
+    <section class="requirements-enrollment" style="background: #fff;">
+        <div class="container py-5">
+            <h1 class="text-center mb-4 section-title">Enrollment Requirements & Procedures</h1>
+            <div class="section-title-hr"></div>
+
+            <div class="row">
+                <!-- Left Column - Requirements -->
+                <div class="col-lg-6">
+                    <h3 class="my-4">Requirements</h3>
+                    <div class="accordion" id="requirementsAccordion">
+                        <!-- New Students -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="newStudents">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseNewStudents" aria-expanded="true" aria-controls="collapseNewStudents">
+                                    New Students
+                                </button>
+                            </h2>
+                            <div id="collapseNewStudents" class="accordion-collapse collapse show" aria-labelledby="newStudents">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Form 138 / Report Card & Form 137A / Permanent Card</li>
+                                        <li>Certificate of Good Moral Character issued by the high school</li>
+                                        <li>Four (4) pcs. 2x2 colored pictures</li>
+                                        <li>Birth certificate (photocopy)</li>
+                                        <li>Long brown envelopes (2 pcs.)</li>
+                                        <li>Medical certificate for healthcare services and HRM enrollees</li>
+                                        <li>National Career Aptitude Exam (NCAE) results</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Transferees -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="transferees">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTransferees" aria-expanded="false" aria-controls="collapseTransferees">
+                                    Transferees
+                                </button>
+                            </h2>
+                            <div id="collapseTransferees" class="accordion-collapse collapse" aria-labelledby="transferees">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Transcript of Records</li>
+                                        <li>Honorable Dismissal</li>
+                                        <li>Certificate of Good Moral Character</li>
+                                        <li>Four (4) pcs. 2x2 pictures</li>
+                                        <li>Long brown envelopes (2 pcs.)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Old Students as Returnees -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="oldStudents">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOldStudents" aria-expanded="false" aria-controls="collapseOldStudents">
+                                    Old Students as Returnees
+                                </button>
+                            </h2>
+                            <div id="collapseOldStudents" class="accordion-collapse collapse" aria-labelledby="oldStudents">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Copy of grades and curricular checklist</li>
+                                        <li>Interview with the Dean and Guidance Counselor (if academic delinquency exists)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Cross-Enrollees -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="crossEnrollees">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCrossEnrollees" aria-expanded="false" aria-controls="collapseCrossEnrollees">
+                                    Cross-Enrollees
+                                </button>
+                            </h2>
+                            <div id="collapseCrossEnrollees" class="accordion-collapse collapse" aria-labelledby="crossEnrollees">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Permit to cross enroll from the Registrar</li>
+                                        <li>Two (2) pcs. 2x2 colored pictures</li>
+                                        <li>Certificate of Good Moral Character from the mother school</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- College Graduates -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="collegeGraduates">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCollegeGraduates" aria-expanded="false" aria-controls="collapseCollegeGraduates">
+                                    College Graduates (Second Course/Unit Earners)
+                                </button>
+                            </h2>
+                            <div id="collapseCollegeGraduates" class="accordion-collapse collapse" aria-labelledby="collegeGraduates">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Official transcript of records (Original and Photocopy)</li>
+                                        <li>Copy of the Diploma</li>
+                                        <li>Two (2) pcs. 2x2 colored pictures</li>
+                                        <li>Certificate of Good Moral Character from previous school or present employer</li>
+                                        <li>Interview with the Head, Academic Department</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Special Non-Credit -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="specialNonCredit">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpecialNonCredit" aria-expanded="false" aria-controls="collapseSpecialNonCredit">
+                                    Special Non-Credit
+                                </button>
+                            </h2>
+                            <div id="collapseSpecialNonCredit" class="accordion-collapse collapse" aria-labelledby="specialNonCredit">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Letter of Intent to study without credit</li>
+                                        <li>Resume</li>
+                                        <li>Previous scholastic records</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Foreign Students -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="foreignStudents">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseForeignStudents" aria-expanded="false" aria-controls="collapseForeignStudents">
+                                    Foreign Students
+                                </button>
+                            </h2>
+                            <div id="collapseForeignStudents" class="accordion-collapse collapse" aria-labelledby="foreignStudents">
+                                <div class="accordion-body">
+                                    <ul>
+                                        <li>Credentials indicating secondary school graduation or equivalent</li>
+                                        <li>Student Visa or Special Study Permit issued by the Bureau of Immigration (BI)</li>
+                                        <li>Photocopy of passport</li>
+                                        <li>Birth certificate</li>
+                                        <li>Two (2) pcs. 2x2 colored pictures</li>
+                                        <li>Medical certificate</li>
+                                        <li>Long brown envelopes (2 pcs.)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column - Enrollment Procedures -->
+                <div class="col-lg-6">
+                    <h3 class="my-4">Enrollment Procedures</h3>
+                    <div class="accordion" id="proceduresAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep1">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep1" aria-expanded="true" aria-controls="collapseProcedureStep1">
+                                    Step 1: Admission Requirements Validation
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep1" class="accordion-collapse collapse show" aria-labelledby="procedureStep1">
+                                <div class="accordion-body">
+                                    Bring the admission requirements for validation at the Registrar’s Office and get the curriculum for the chosen course.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep2">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep2" aria-expanded="false" aria-controls="collapseProcedureStep2">
+                                    Step 2: Evaluation by Department Head
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep2" class="accordion-collapse collapse" aria-labelledby="procedureStep2">
+                                <div class="accordion-body">
+                                    Proceed to the Department Head of the course for evaluation of subjects taken.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep3">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep3" aria-expanded="false" aria-controls="collapseProcedureStep3">
+                                    Step 3: Pre-Registration
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep3" class="accordion-collapse collapse" aria-labelledby="procedureStep3">
+                                <div class="accordion-body">
+                                    Pay for your Pre-Registration form at the Cashier’s Office and submit it to the Registrar’s Office.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep4">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep4" aria-expanded="false" aria-controls="collapseProcedureStep4">
+                                    Step 4: Course Registration
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep4" class="accordion-collapse collapse" aria-labelledby="procedureStep4">
+                                <div class="accordion-body">
+                                    Register for your subjects at the Registrar’s Office.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep5">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep5" aria-expanded="false" aria-controls="collapseProcedureStep5">
+                                    Step 5: Payment of Fees
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep5" class="accordion-collapse collapse" aria-labelledby="procedureStep5">
+                                <div class="accordion-body">
+                                    Pay your tuition fees at the Cashier’s Office, then submit the payment receipt to the Registrar’s Office.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="procedureStep6">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseProcedureStep6" aria-expanded="false" aria-controls="collapseProcedureStep6">
+                                    Step 6: Release of Registration Form
+                                </button>
+                            </h2>
+                            <div id="collapseProcedureStep6" class="accordion-collapse collapse" aria-labelledby="procedureStep6">
+                                <div class="accordion-body">
+                                    After completing the registration, the Registrar’s Office will release the official registration form and materials.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
    <!-- Contact Section -->
    <section class="py-5" id="contact" style="background: #e9ecef;">
         <div class="container">
@@ -366,7 +643,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-geo-alt fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Address</h5>
-                            <p class="card-text">Lyceum of Subic Bay, Zambales, Philippines</p>
+                            <p class="card-text">73 Rizal Hwy, Central Business District, Subic Bay Freeport Zone, Zambales</p>
                         </div>
                     </div>
                 </div>
@@ -375,7 +652,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-telephone fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Call Us</h5>
-                            <p class="card-text">(+63) 123-456-7890</p>
+                            <p class="card-text">(047) 252 5940 , 09285020242
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -384,7 +662,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-body">
                             <i class="bi bi-envelope fs-1 text-primary"></i>
                             <h5 class="card-title mt-3">Email Us</h5>
-                            <p class="card-text">info@lsbesports.ph</p>
+                            <p class="card-text">lyceumsubicbay@lsb.edu.ph</p>
                         </div>
                     </div>
                 </div>
@@ -469,18 +747,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </script>
                 <div class="swiper-wrapper pb-5">
 
-                    <div class="swiper-slide">
+                <div class="swiper-slide">
                         <div class="testimonial-item border rounded p-4 shadow-sm">
                             <div class="stars mb-2">
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                                Master in Public Mgmt. (ip)<br>
+                                Bachelor of Laws<br>
+                                Bachelor in Political Science
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Saul Goodman</h3>
-                                <h4 class="text-muted">Ceo &amp; Founder</h4>
+                                <img src="img/randy.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>Mr. Randy L. Baguling</h3>
+                                <h4 class="text-muted">Asst. Research Director</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -491,12 +771,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                                It is with pride, that I congratulate the men and women behind the “debut” publication of the Lyceum of Subic Bay Inc. (LSBI)’s Research Journal. With Mr. Roel B. Dimalanta as Research Director, in his concurrent position as Head of the Office of Student Affairs and Services (OSAS) on the lead, this accomplishment is no mean feat. A major development, the Journal shall now provide a venue for both the faculty members and students’ research outputs.
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Sara Wilsson</h3>
-                                <h4 class="text-muted">Designer</h4>
+                                <img src="img/vp.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>DR. DIENA B. OROCEO</h3>
+                                <h4 class="text-muted">VP for Academic Affairs</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -507,12 +787,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                                It is a fact that progress and development in the various fields of endeavor, came about because of studies and research conducted by concerned individuals. Higher Education Institutions (HEIs), like Lyceum of Subic Bay, Inc. (LSBI) therefore, is duty-bound to hone their students’ knowledge, skills and abilities to search and discover answers to certain unknowns. Through this maiden issue of the school’s publication of the Online Research Journal, interested Lyceans will now be able to put to use their writing and investigative skills, to find something new to innovative or improve on something already existing.
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Jena Karlis</h3>
-                                <h4 class="text-muted">Store Owner</h4>
+                                <img src="img/ceo.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>ALFONSO E. BORDA</h3>
+                                <h4 class="text-muted">President/CEO</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -523,12 +803,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                                Doctor in Philosophy major in Educational Mgmt.(ip)<br>
+                                MA major in Educational Administration<br>
+                                BA major in English
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>Matt Brandon</h3>
-                                <h4 class="text-muted">Freelancer</h4>
+                                <img src="img/roel.jpg" class="testimonial-img mb-3" alt="">
+                                <h3>Mr. Roel B. Dimalanta</h3>
+                                <h4 class="text-muted">Research Director</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -539,12 +821,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                             </div>
                             <p class="mb-3">
-                                Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                                • Engineering Programs • Architecture<br>
+                                • Business Administration • Information Technology<br>
+                                • Accountancy • Customs Administration <br>
+                                • Hospitality Management • Tourism<br>
+                                • Psychology • Criminology<br>
+                                <br>
+                                • College Librarian • MIS Coordinator<br>
+                                • Guidance Counselor • Asst. to the HR Manager
                             </p>
                             <div class="profile mt-auto text-center">
-                                <img src="img/valo_bg.png" class="testimonial-img mb-3" alt="">
-                                <h3>John Larson</h3>
-                                <h4 class="text-muted">Entrepreneur</h4>
+                                <img src="img/2.png" class="testimonial-img mb-3" alt="">
+                                <h3>Representatives</h3>
+                                <h4 class="text-muted">Department &amp Secretariat</h4>
                             </div>
                         </div>
                     </div><!-- End testimonial item -->
@@ -558,13 +847,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Chatbot Section -->
     <script>
         window.embeddedChatbotConfig = {
-        chatbotId: "n6QilLoDecBUhKqbS5JPL",
+        chatbotId: "U5QHg3tK3ESsfMbpbLEWt",
         domain: "www.chatbase.co"
         }
         </script>
         <script
         src="https://www.chatbase.co/embed.min.js"
-        chatbotId="n6QilLoDecBUhKqbS5JPL"
+        chatbotId="U5QHg3tK3ESsfMbpbLEWt"
         domain="www.chatbase.co"
         defer>
     </script><!-- /Chatbot Section -->

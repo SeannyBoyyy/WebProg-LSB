@@ -54,7 +54,7 @@ if (isset($_POST['upload_program'])) {
 $seniorHighQuery = "SELECT * FROM programs WHERE category = 'Senior High' ORDER BY program_id DESC";
 $seniorHighResult = mysqli_query($conn, $seniorHighQuery);
 
-$collegeQuery = "SELECT * FROM programs WHERE category = 'College'";
+$collegeQuery = "SELECT * FROM programs WHERE category = 'College' ORDER BY program_id DESC";
 $collegeResult = mysqli_query($conn, $collegeQuery);
 ?>
 
@@ -111,7 +111,7 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                         <?php while($row = $seniorHighResult->fetch_assoc()): ?>
                             <tr>
                                 <td><?= $counter++ ?></td>
-                                <td><?= $row['title']; ?></td>
+                                <td><?= htmlspecialchars($row['title']); ?></td>
                                 <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>
                                 <td><?= $row['created_at']; ?></td>
@@ -162,7 +162,7 @@ $collegeResult = mysqli_query($conn, $collegeQuery);
                         <?php while($row = $collegeResult->fetch_assoc()): ?>
                             <tr>
                                 <td><?= $counter1++ ?></td>
-                                <td><?= $row['title']; ?></td>
+                                <td><?= htmlspecialchars($row['title']); ?></td>
                                 <td><?= htmlspecialchars(substr($row['description'], 0, 25) . '...'); ?></td>
                                 <td><img src="img/<?= $row['image_url']; ?>" alt="Program Image" width="100"></td>
                                 <td><?= $row['created_at']; ?></td>
